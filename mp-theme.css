@@ -1,0 +1,121 @@
+/* mp-theme.css */
+/* @theme mp-theme */
+
+@import "default";
+/* @import "https://rsms.me/inter/inter.css"; */
+
+section {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  background-size: cover;
+  background-color: #202020;
+  color: #dadada;
+}
+
+
+section h1 {
+  color: #eee;
+}
+
+section.intro::before {
+  position: absolute;
+  
+  /* Watermark image */
+  background-size: 300px;
+  padding-top: 150px;
+}
+
+section::before {
+  position: absolute;
+
+  /* Copyright text */
+  content: "© Copyright 2024 Michał Pawlik. All rights reserved.";
+  font-size: 12px;
+  color: #888;
+  width: 80%;
+  text-align: center;
+
+  /* Position and size */
+  bottom: 5px;
+  height: 32px;
+
+  /* Allow to control elements under the watermark */
+  pointer-events: none;
+}
+
+code {
+  font-family: "Fira Code", Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+footer{  
+  font-size: 12px;
+  color: #888;
+}
+
+/* divider for new section */
+section.divider::before {
+  color: #eee;
+  background-image: unset;
+}
+
+section.divider {
+  background-size: cover;
+  background-color: #08445c;
+}
+
+section.divider h1 {
+  color: #eee;
+}
+
+section.lime-background {
+  background-color: #3a700d;
+}
+
+section.yellow-background:before,
+section.yellow-background h1 {
+  color: #111;
+}
+
+section.yellow-background {
+  background-color: #d7b025;
+  color: #111;
+}
+
+/* make sure code snippets are above the copyright notice */
+section pre {
+  z-index: 3;
+  color: #555;
+  font-weight: 500;
+}
+
+/* line numbers */
+
+/* reset for those without .line-numbers */
+section pre ol {
+  padding-inline-start: 0px;
+  margin-block-end: 0.3em;
+  list-style-type: none;
+}
+
+/* add align numbers for section with .line-numbers */
+section.line-numbers pre ol {
+  all: unset;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  counter-reset: line-number 0;
+}
+
+section.line-numbers pre ol li {
+  display: contents;
+}
+
+section.line-numbers pre ol li span[data-marp-line-number]::before {
+  display: block;
+  content: counter(line-number) ". ";
+  counter-increment: line-number;
+  text-align: right;
+  color: #999;
+}
+
+section.line-numbers pre ol li span[data-marp-line-number] {
+  padding-bottom: 0.17em;
+}
