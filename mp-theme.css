@@ -30,7 +30,7 @@ section::before {
   /* Copyright text */
   content: "© Copyright 2024 Michał Pawlik. All rights reserved.";
   font-size: 12px;
-  color: #888;
+  color: #eee;
   width: 80%;
   text-align: center;
 

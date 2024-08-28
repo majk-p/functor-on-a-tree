@@ -6,7 +6,7 @@ transition: slide
 marp: true
 ---
 
-![bg brightness:0.7](./img/forest1.jpg)
+![bg brightness:0.7](./img/forest2.jpg)
 
 <!-- _transition: fade -->
 
@@ -14,7 +14,7 @@ marp: true
 
 <!-- _transition: fade -->
 
-![bg blur:5px brightness:0.5](./img/forest1.jpg)
+![bg blur:5px brightness:0.5](./img/forest2.jpg)
 
 # What does the functor do on the tree?
 
@@ -41,6 +41,10 @@ marp: true
  * Source code
  * Filesystem and the `tree` command
 4) Drawing our own tree
+ * Goal: draw a timeline of WSUG
+   * First just edition names + times
+   * Then subtrees with topics and authors
+   * Then sub-subtrees with author details like website or socials
  * Depth first - functional approach
  * Breadth-first - imperative
  * Compile it together
@@ -48,7 +52,7 @@ marp: true
 
 
 
-![bg blur:5px brightness:0.5](./img/path-dog1.jpg)
+![bg blur:5px brightness:0.4](./img/path-dog1.jpg)
 
 # Path for today
 
@@ -56,3 +60,45 @@ marp: true
 2) Identify the `Functor` on the `Tree`
 3) Everyday `Tree` in IT
 4) Draw yourself a `Tree`
+
+<!-- _transition: fade -->
+
+---
+<!-- _transition: fade -->
+
+![bg](./img/forest-backpack1.jpg)
+
+---
+<!-- _transition: fade -->
+
+![bg](./img/bird1.jpg)
+
+---
+<!-- _transition: fade -->
+
+![bg](./img/cat1.jpg)
+
+---
+<!-- _transition: fade -->
+
+![bg](./img/tree-with-functor-1.jpg)
+
+---
+<!-- _transition: fade -->
+
+![bg](./img/tree-with-functor-2.jpg)
+
+---
+
+![bg](./img/tree-with-functor-3.jpg)
+
+---
+
+<!-- _transition: drop -->
+
+![bg](./img/tree2.jpg)
+
+---
+
+![bg](./img/tree2-upside-down.jpg)
+
