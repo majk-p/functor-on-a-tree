@@ -1,3 +1,7 @@
 output/*
 slides.html
 slides.pdf
+code/.bsp
+code/.metals
+code/.scala-build
+code/.vscode

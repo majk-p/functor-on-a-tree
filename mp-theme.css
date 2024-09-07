@@ -16,6 +16,10 @@ section h1 {
   color: #eee;
 }
 
+section h1>strong {
+  color:#47dd54;
+}
+
 section.intro::before {
   position: absolute;
   

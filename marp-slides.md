@@ -6,24 +6,6 @@ transition: slide
 marp: true
 ---
 
-```scala mdoc:invisible
-import scala.io.Source
-
-def sourceFromFile(file: String, fromTo: Option[(Int, Int)] = None) = println({
-  fromTo match {
-    case None => linesFromFile(file)
-    case Some((from, to)) =>
-      linesFromFile(file).zipWithIndex
-        .filter { case (_, line) =>
-          (line+1) >= from && (line+1) <= to
-        }
-        .map(_._1)
-  }
-}.mkString("```scala\n", "\n", "\n```"))
-
-def linesFromFile(file: String) =
-  Source.fromFile(file).getLines().toList
-```
 
 
 ![bg brightness:0.7](./img/forest2.jpg)
@@ -155,8 +137,10 @@ they can spot...
 
 <!-- _class: line-numbers -->
 
-```scala mdoc:passthrough
-sourceFromFile("code/tree.scala", Some(3, 5))
+```scala
+enum Tree[A]:
+  case Branch(value: A, branches: NonEmptyList[Tree[A]])
+  case Leaf(value: A)
 ```
 ---
 
