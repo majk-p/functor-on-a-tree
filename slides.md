@@ -158,6 +158,7 @@ they can spot...
 ```scala mdoc:passthrough
 sourceFromFile("code/src/main/scala/tree.scala", Some(3, 5))
 ```
+
 ---
 
 # Now what?
@@ -251,6 +252,202 @@ Self-balancing tree called *B-tree* is a popular way to implement indexing in da
 # Wait that looked quite nice 🤔
 
 How about we implement a renderer like this for our tree?
+
+---
+
+# Goal 🥅
+
+Draw a tree of meetup editions with topics as sub-trees 🌳 and speaker info as leafs 🍀
+
+<!-- TODO make a slide with showcasing the expected result -->
+
+---
+
+# Renderer
+
+<!-- _class: line-numbers -->
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/renderer.scala", Some(3, 6))
+```
+---
+
+# Baby steps 👶
+
+Let's start with drawing this:
+```bash
+/
+├── bin
+├── boot
+├── etc
+├── home
+├── root
+├── usr
+└── var
+```
+
+---
+
+# Test
+
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/test/scala/RendererV1Test.scala", Some(12, 33))
+```
+
+---
+
+# Renderer
+
+<!-- _class: line-numbers -->
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/RendererV1.scala", Some(6, 17))
+```
+
+---
+
+# Let's test it!
+
+---
+
+# Snapshot test result
+
+```diff
+Snapshot not equal
+=> Obtained
+/
+├── bin
+├── boot
+├── etc
+├── home
+├── root
+├── usr
+├── var
+=> Diff (- obtained, + expected)
+ ├── usr
+-├── var
++└── var
+```
+
+---
+
+# The missing `└──`
+
+---
+
+# RendererV2
+
+<!-- _class: line-numbers -->
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/RendererV2.scala", Some(6, 25))
+```
+
+---
+
+# Test again
+
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/test/scala/RendererV2Test.scala", Some(12, 32))
+```
+
+---
+
+# So far so good!
+
+```bash
+RendererV2Test:
+  + should render a simple tree 0.266s
+```
+
+---
+
+# Nesting 🪜
+
+Can we handle nested structures?
+
+---
+
+# Nesting 🪜
+
+Can we handle nested structures?
+
+```bash
+/
+├── bin
+├── boot
+├── etc
+├── home
+│   └── majk
+├── root
+├── usr
+└── var
+```
+
+---
+
+# Let's test it
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/test/scala/RendererV2Test.scala", Some(34, 62))
+```
+
+---
+
+# Not quite!
+
+```diff
+Snapshot not equal
+=> Obtained
+/
+├── bin
+├── boot
+├── etc
+home
+└── majk
+├── root
+├── usr
+└── var
+=> Diff (- obtained, + expected)
+ ├── etc
+-home
+-└── majk
++├── home
++│   └── majk
+ ├── root
+```
+
+---
+
+# Back to the source code
+
+<!-- _class: line-numbers -->
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/RendererV2.scala", Some(6, 25))
+```
+
+---
+
+# Is this strategy good enough anyway?
+
+<!-- TODO show a step by step visualization, showcase how we lack info about the next branch when visiting with depth-first -->
+
+---
+
+# Depth-first search
+
+![bg 100% right:40%](./img/Depth-First-Search.gif)
+
+<!-- draw the tree from the example above and show how when visiting `majk` leaf we don't know if there are other nodes on the upper level -->
+
+---
+
+# Breadth-first search
+![bg 100% right:40%](./img/Animated_BFS.gif)
+
 
 <!-- 
 ![](./img/Types-of-Tree-Data-Structure.webp)

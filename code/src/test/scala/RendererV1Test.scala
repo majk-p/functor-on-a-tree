@@ -7,7 +7,8 @@ import snapshot4s.generated.snapshotConfig
 
 class RendererV1Test extends munit.FunSuite with SnapshotAssertions {
 
-  val renderer = new ConsoleRendererV1
+  val renderer = new RendererV1
+
   test("should render a simple tree") {
     val oneLevelTree: Tree[String] =
       Branch(
@@ -16,10 +17,9 @@ class RendererV1Test extends munit.FunSuite with SnapshotAssertions {
           .of("bin", "boot", "etc", "home", "root", "usr", "var")
           .map(Leaf(_))
       )
-    val rendered = renderer.render(oneLevelTree)
 
     assertInlineSnapshot(
-      rendered,
+      renderer.render(oneLevelTree),
       """/
         |├── bin
         |├── boot
@@ -27,8 +27,7 @@ class RendererV1Test extends munit.FunSuite with SnapshotAssertions {
         |├── home
         |├── root
         |├── usr
-        |└── var
-        |""".stripMargin
+        |└── var""".stripMargin
     )
   }
 

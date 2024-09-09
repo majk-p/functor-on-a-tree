@@ -142,6 +142,7 @@ enum Tree[A]:
   case Branch(value: A, xbranches: NonEmptyList[Tree[A]])
   case Leaf(value: A)
 ```
+
 ---
 
 # Now what?
@@ -235,6 +236,323 @@ Self-balancing tree called *B-tree* is a popular way to implement indexing in da
 # Wait that looked quite nice 🤔
 
 How about we implement a renderer like this for our tree?
+
+---
+
+# Goal 🥅
+
+Draw a tree of meetup editions with topics as sub-trees 🌳 and speaker info as leafs 🍀
+
+<!-- TODO make a slide with showcasing the expected result -->
+
+---
+
+# Renderer
+
+<!-- _class: line-numbers -->
+
+```scala
+trait Renderer {
+  // `Show` means that we can turn `A` into a nice `String`
+  def render[A: Show](tree: Tree[A]): String
+}
+```
+---
+
+# Baby steps 👶
+
+Let's start with drawing this:
+```bash
+/
+├── bin
+├── boot
+├── etc
+├── home
+├── root
+├── usr
+└── var
+```
+
+---
+
+# Test
+
+
+```scala
+  test("should render a simple tree") {
+    val oneLevelTree: Tree[String] =
+      Branch(
+        "/",
+        NonEmptyList
+          .of("bin", "boot", "etc", "home", "root", "usr", "var")
+          .map(Leaf(_))
+      )
+
+    assertInlineSnapshot(
+      renderer.render(oneLevelTree),
+      """/
+        |├── bin
+        |├── boot
+        |├── etc
+        |├── home
+        |├── root
+        |├── usr
+        |└── var""".stripMargin
+    )
+  }
+
+```
+
+---
+
+# Renderer
+
+<!-- _class: line-numbers -->
+
+```scala
+  def render[A: Show](tree: Tree[A]): String =
+    tree match {
+      case Tree.Branch(value, branches) =>
+        val renderedBranches =
+          branches
+            .map(render(_))
+            .toList
+            .mkString("\n")
+        show"$value\n$renderedBranches"
+
+      case Tree.Leaf(value) => show"├── $value"
+    }
+```
+
+---
+
+# Let's test it!
+
+---
+
+# Snapshot test result
+
+```diff
+Snapshot not equal
+=> Obtained
+/
+├── bin
+├── boot
+├── etc
+├── home
+├── root
+├── usr
+├── var
+=> Diff (- obtained, + expected)
+ ├── usr
+-├── var
++└── var
+```
+
+---
+
+# The missing `└──`
+
+---
+
+# RendererV2
+
+<!-- _class: line-numbers -->
+
+```scala
+  def render[A: Show](tree: Tree[A]): String =
+    renderRecursive(tree, true)
+
+  private def renderRecursive[A: Show](tree: Tree[A], isLast: Boolean): String =
+    tree match {
+      case Tree.Branch(value, branches) =>
+        val allButLast = branches.init.map(
+          renderRecursive(_, isLast = false)
+        )
+        val lastBranch = renderRecursive(
+          branches.last,
+          isLast = true
+        )
+        val renderedBranches = (allButLast :+ lastBranch).mkString("\n")
+        show"$value\n$renderedBranches"
+
+      case Tree.Leaf(value) =>
+        if (isLast) show"└── $value"
+        else show"├── $value"
+    }
+```
+
+---
+
+# Test again
+
+
+```scala
+  test("should render a simple tree") {
+    val oneLevelTree: Tree[String] =
+      Branch(
+        "/",
+        NonEmptyList
+          .of("bin", "boot", "etc", "home", "root", "usr", "var")
+          .map(Leaf(_))
+      )
+
+    assertInlineSnapshot(
+      renderer.render(oneLevelTree),
+      """/
+        |├── bin
+        |├── boot
+        |├── etc
+        |├── home
+        |├── root
+        |├── usr
+        |└── var""".stripMargin
+    )
+  }
+```
+
+---
+
+# So far so good!
+
+```bash
+RendererV2Test:
+  + should render a simple tree 0.266s
+```
+
+---
+
+# Nesting 🪜
+
+Can we handle nested structures?
+
+---
+
+# Nesting 🪜
+
+Can we handle nested structures?
+
+```bash
+/
+├── bin
+├── boot
+├── etc
+├── home
+│   └── majk
+├── root
+├── usr
+└── var
+```
+
+---
+
+# Let's test it
+
+```scala
+  test("should render a simple tree") {
+    val oneLevelTree: Tree[String] =
+      Branch(
+        "/",
+        NonEmptyList
+          .of(
+            Leaf("bin"),
+            Leaf("boot"),
+            Leaf("etc"),
+            Branch("home", NonEmptyList.one(Leaf("majk"))),
+            Leaf("root"),
+            Leaf("usr"),
+            Leaf("var")
+          )
+      )
+
+    assertInlineSnapshot(
+      renderer.render(oneLevelTree),
+      """/
+        |├── bin
+        |├── boot
+        |├── etc
+        |├── home
+        |│   └── majk
+        |├── root
+        |├── usr
+        |└── var""".stripMargin
+    )
+  }
+```
+
+---
+
+# Not quite!
+
+```diff
+Snapshot not equal
+=> Obtained
+/
+├── bin
+├── boot
+├── etc
+home
+└── majk
+├── root
+├── usr
+└── var
+=> Diff (- obtained, + expected)
+ ├── etc
+-home
+-└── majk
++├── home
++│   └── majk
+ ├── root
+```
+
+---
+
+# Back to the source code
+
+<!-- _class: line-numbers -->
+
+```scala
+  def render[A: Show](tree: Tree[A]): String =
+    renderRecursive(tree, true)
+
+  private def renderRecursive[A: Show](tree: Tree[A], isLast: Boolean): String =
+    tree match {
+      case Tree.Branch(value, branches) =>
+        val allButLast = branches.init.map(
+          renderRecursive(_, isLast = false)
+        )
+        val lastBranch = renderRecursive(
+          branches.last,
+          isLast = true
+        )
+        val renderedBranches = (allButLast :+ lastBranch).mkString("\n")
+        show"$value\n$renderedBranches"
+
+      case Tree.Leaf(value) =>
+        if (isLast) show"└── $value"
+        else show"├── $value"
+    }
+```
+
+---
+
+# Is this strategy good enough anyway?
+
+<!-- TODO show a step by step visualization, showcase how we lack info about the next branch when visiting with depth-first -->
+
+---
+
+# Depth-first search
+
+![bg 100% right:40%](./img/Depth-First-Search.gif)
+
+<!-- draw the tree from the example above and show how when visiting `majk` leaf we don't know if there are other nodes on the upper level -->
+
+---
+
+# Breadth-first search
+![bg 100% right:40%](./img/Animated_BFS.gif)
+
 
 <!-- 
 ![](./img/Types-of-Tree-Data-Structure.webp)
