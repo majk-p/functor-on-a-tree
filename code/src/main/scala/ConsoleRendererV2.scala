@@ -1,6 +1,6 @@
 import cats.Show
 
-class ConsoleRenderer extends Renderer {
+class ConsoleRendererV2 extends Renderer {
 
   def render[A: Show](tree: Tree[A]): String =
     renderRecursive(tree, true)

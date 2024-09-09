@@ -139,7 +139,7 @@ they can spot...
 
 ```scala
 enum Tree[A]:
-  case Branch(value: A, branches: NonEmptyList[Tree[A]])
+  case Branch(value: A, xbranches: NonEmptyList[Tree[A]])
   case Leaf(value: A)
 ```
 ---

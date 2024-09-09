@@ -156,7 +156,7 @@ they can spot...
 <!-- _class: line-numbers -->
 
 ```scala mdoc:passthrough
-sourceFromFile("code/tree.scala", Some(3, 5))
+sourceFromFile("code/src/main/scala/tree.scala", Some(3, 5))
 ```
 ---
 
