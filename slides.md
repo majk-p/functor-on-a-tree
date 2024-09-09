@@ -429,11 +429,6 @@ home
 sourceFromFile("code/src/main/scala/RendererV2.scala", Some(6, 25))
 ```
 
----
-
-# Is this strategy good enough anyway?
-
-<!-- TODO show a step by step visualization, showcase how we lack info about the next branch when visiting with depth-first -->
 
 ---
 
@@ -441,12 +436,116 @@ sourceFromFile("code/src/main/scala/RendererV2.scala", Some(6, 25))
 
 ![bg 100% right:40%](./img/Depth-First-Search.gif)
 
+<!-- _footer: Source: https://en.wikipedia.org/wiki/Depth-first_search -->
+
 <!-- draw the tree from the example above and show how when visiting `majk` leaf we don't know if there are other nodes on the upper level -->
+
+
+---
+
+# Is this strategy good enough anyway?
+
+---
+<!-- _transition: fade -->
+# Step by step
+
+Let's do depth first search on a simplified tree
+
+```bash
+/
+├── bin
+├── boot
+├── home
+│   └── majk
+└── root
+```
+
+![bg 100% left:40%](./img/directories-background.png)
+
+---
+<!-- _transition: fade -->
+# Step by step
+
+```bash
+/
+├── bin
+...
+```
+
+![bg 100% left:40%](./img/directories-background-bin.png)
+
+---
+<!-- _transition: fade -->
+# Step by step
+
+```bash
+/
+├── bin
+├── boot
+...
+```
+
+![bg 100% left:40%](./img/directories-background-boot.png)
+
+---
+<!-- _transition: fade -->
+# Step by step
+
+```bash
+/
+├── bin
+├── boot
+├── home
+...
+```
+
+![bg 100% left:40%](./img/directories-background-home.png)
+
+---
+
+# Step by step
+
+```bash
+/
+├── bin
+├── boot
+├── home
+❓  └── majk
+```
+🤔 what should the first character be?
+
+![bg 100% left:40%](./img/directories-background-majk.png)
+
+
+---
+
+# Limitations of DFS
+
+* We want to draw trees in depth-first manner, but we lack information about the structure
+* We need to learn the tree width first, before deciding how to print nodes
+
+---
+<!-- _transition: fade -->
+
+# Breadth-first search
+![bg 100% right:40%](./img/Animated_BFS.gif)
+
+<!-- _footer: Source https://en.wikipedia.org/wiki/Breadth-first_search -->
 
 ---
 
 # Breadth-first search
+
+**Black:** explored
+
+**Grey:** queued to be explored later on
+
+* You got this right, we're introducing a mutable queue 😲
+
 ![bg 100% right:40%](./img/Animated_BFS.gif)
+
+<!-- _footer: Source https://en.wikipedia.org/wiki/Breadth-first_search -->
+
 
 
 <!-- 
