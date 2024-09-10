@@ -443,6 +443,23 @@ sourceFromFile("code/src/main/scala/RendererV2.scala", Some(6, 25))
 
 ---
 
+# Depth-first search
+
+<!-- _class: line-numbers -->
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/RendererV1.scala", Some(6, 17))
+```
+
+![bg 100% right:40%](./img/Depth-First-Search.gif)
+
+<!-- _footer: Source: https://en.wikipedia.org/wiki/Depth-first_search -->
+
+<!-- draw the tree from the example above and show how when visiting `majk` leaf we don't know if there are other nodes on the upper level -->
+
+
+---
+
 # Is this strategy good enough anyway?
 
 ---
@@ -546,7 +563,139 @@ Let's do depth first search on a simplified tree
 
 <!-- _footer: Source https://en.wikipedia.org/wiki/Breadth-first_search -->
 
+---
 
+# Basic BFS
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFS.scala", Some(7, 11))
+```
+🙈
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFS.scala", Some(20, 22))
+```
+
+---
+
+# Basic BFS
+
+<!-- _class: line-numbers -->
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFS.scala", Some(8, 23))
+```
+
+---
+
+# Let's test it
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/test/scala/BFSTest.scala", Some(10, 31))
+```
+
+---
+
+# Let's see it in action
+
+```scala
+sbt:root> testOnly *BFS*
+Visiting     /, queue: Queue()
+Visiting   bin, queue: Queue(boot, etc, home, root, usr, var)
+Visiting  boot, queue: Queue(etc, home, root, usr, var)
+Visiting   etc, queue: Queue(home, root, usr, var)
+Visiting  home, queue: Queue(root, usr, var)
+Visiting  root, queue: Queue(usr, var, majk)
+Visiting   usr, queue: Queue(var, majk)
+Visiting   var, queue: Queue(majk)
+Visiting  majk, queue: Queue()
+BFSTest:
+  + should visit nodes in expected order 0.124s
+[info] Passed: Total 1, Failed 0, Errors 0, Passed 1
+```
+
+---
+
+# So far so good, ordering makes sense
+
+Now let's attach some info along the way
+
+---
+
+# Node positioning
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFS.scala", Some(25, 29))
+```
+
+---
+
+# Node positioning
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFS.scala", Some(25, 29))
+```
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(10,10))
+```
+
+---
+
+# Extended queue and result type
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(10,14))
+```
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(23,25))
+```
+
+
+---
+
+# Extended queue and result type
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(14,23))
+```
+
+
+---
+
+# Extended queue and result type
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(14,23))
+```
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(27,32))
+```
+
+---
+
+# Let's test it
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/test/scala/BFSTest.scala", Some(63, 79))
+```
+---
+
+<!-- not sure if I should do it, to little time -->
+
+# What about duplicates?
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/test/scala/BFSTest.scala", Some(81, 103))
+```
+
+
+---
+
+# Bonus
+
+B-trees https://planetscale.com/blog/btrees-and-database-indexes
 
 <!-- 
 ![](./img/Types-of-Tree-Data-Structure.webp)

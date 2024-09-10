@@ -139,7 +139,7 @@ they can spot...
 
 ```scala
 enum Tree[A]:
-  case Branch(value: A, xbranches: NonEmptyList[Tree[A]])
+  case Branch(value: A, branches: NonEmptyList[Tree[A]])
   case Leaf(value: A)
 ```
 
@@ -548,6 +548,34 @@ home
 
 ---
 
+# Depth-first search
+
+<!-- _class: line-numbers -->
+
+```scala
+  def render[A: Show](tree: Tree[A]): String =
+    tree match {
+      case Tree.Branch(value, branches) =>
+        val renderedBranches =
+          branches
+            .map(render(_))
+            .toList
+            .mkString("\n")
+        show"$value\n$renderedBranches"
+
+      case Tree.Leaf(value) => show"├── $value"
+    }
+```
+
+![bg 100% right:40%](./img/Depth-First-Search.gif)
+
+<!-- _footer: Source: https://en.wikipedia.org/wiki/Depth-first_search -->
+
+<!-- draw the tree from the example above and show how when visiting `majk` leaf we don't know if there are other nodes on the upper level -->
+
+
+---
+
 # Is this strategy good enough anyway?
 
 ---
@@ -651,7 +679,256 @@ Let's do depth first search on a simplified tree
 
 <!-- _footer: Source https://en.wikipedia.org/wiki/Breadth-first_search -->
 
+---
 
+# Basic BFS
+
+```scala
+
+  def breadthFirstList[A](root: Tree[A]): List[A] = {
+    val q = Queue.empty[Tree[A]]
+    val results = ListBuffer.empty[A]
+    q.enqueue(root)
+```
+🙈
+```scala
+          results.append(value)
+    }
+    results.toList
+```
+
+---
+
+# Basic BFS
+
+<!-- _class: line-numbers -->
+
+```scala
+  def breadthFirstList[A](root: Tree[A]): List[A] = {
+    val q = Queue.empty[Tree[A]]
+    val results = ListBuffer.empty[A]
+    q.enqueue(root)
+    while (q.nonEmpty) {
+      val node = q.dequeue()
+      println(f"Visiting ${node.getValue}%5s, queue: ${q.map(_.getValue)}")
+      node match
+        case Tree.Branch(value, branches) =>
+          results.append(value)
+          q.enqueueAll(branches.toList)
+        case Tree.Leaf(value) =>
+          results.append(value)
+    }
+    results.toList
+  }
+```
+
+---
+
+# Let's test it
+
+```scala
+
+  test("should visit nodes in expected order") {
+    val oneLevelTree: Tree[String] =
+      Branch(
+        "/",
+        NonEmptyList
+          .of(
+            Leaf("bin"),
+            Leaf("boot"),
+            Leaf("etc"),
+            Branch("home", NonEmptyList.one(Leaf("majk"))),
+            Leaf("root"),
+            Leaf("usr"),
+            Leaf("var")
+          )
+      )
+
+    assertInlineSnapshot(
+      BFS.breadthFirstList(oneLevelTree),
+      List("/", "bin", "boot", "etc", "home", "root", "usr", "var", "majk")
+    )
+  }
+```
+
+---
+
+# Let's see it in action
+
+```scala
+sbt:root> testOnly *BFS*
+Visiting     /, queue: Queue()
+Visiting   bin, queue: Queue(boot, etc, home, root, usr, var)
+Visiting  boot, queue: Queue(etc, home, root, usr, var)
+Visiting   etc, queue: Queue(home, root, usr, var)
+Visiting  home, queue: Queue(root, usr, var)
+Visiting  root, queue: Queue(usr, var, majk)
+Visiting   usr, queue: Queue(var, majk)
+Visiting   var, queue: Queue(majk)
+Visiting  majk, queue: Queue()
+BFSTest:
+  + should visit nodes in expected order 0.124s
+[info] Passed: Total 1, Failed 0, Errors 0, Passed 1
+```
+
+---
+
+# So far so good, ordering makes sense
+
+Now let's attach some info along the way
+
+---
+
+# Node positioning
+
+```scala
+  enum Position {
+    case First
+    case Middle
+    case Last
+  }
+```
+
+---
+
+# Node positioning
+
+```scala
+  enum Position {
+    case First
+    case Middle
+    case Last
+  }
+```
+
+```scala
+  def labelNodes[A](root: Tree[A]): List[(A, List[Position])] = {
+```
+
+---
+
+# Extended queue and result type
+
+```scala
+  def labelNodes[A](root: Tree[A]): List[(A, List[Position])] = {
+    val q = Queue.empty[(Tree[A], List[Position])]
+    val results = ListBuffer.empty[(A, List[Position])]
+    q.enqueue((root, List.empty))
+    while (q.nonEmpty) {
+```
+
+```scala
+    }
+    results.toList
+  }
+```
+
+
+---
+
+# Extended queue and result type
+
+```scala
+    while (q.nonEmpty) {
+      val (node, paddings) = q.dequeue()
+      node match
+        case Tree.Branch(value, branches) =>
+          val branchesWithPaddings = attachPaddings(paddings)(branches.toList)
+          results.append((value, paddings))
+          q.enqueueAll(branchesWithPaddings)
+        case Tree.Leaf(value) =>
+          results.append((value, paddings))
+    }
+```
+
+
+---
+
+# Extended queue and result type
+
+```scala
+    while (q.nonEmpty) {
+      val (node, paddings) = q.dequeue()
+      node match
+        case Tree.Branch(value, branches) =>
+          val branchesWithPaddings = attachPaddings(paddings)(branches.toList)
+          results.append((value, paddings))
+          q.enqueueAll(branchesWithPaddings)
+        case Tree.Leaf(value) =>
+          results.append((value, paddings))
+    }
+```
+
+```scala
+  private def attachPaddings[A](parentPaddings: List[Position])(
+      branches: List[Tree[A]]
+  ): List[(Tree[A], List[Position])] =
+    branches.zipWithIndex.map { case (tree, index) =>
+      (tree, parentPaddings.appended(calculatePadding(index, branches.size)))
+    }
+```
+
+---
+
+# Let's test it
+
+```scala
+
+  test("should produce multi-paddings") {
+    assertInlineSnapshot(
+      BFSMultipadding.labelNodes(oneLevelTree),
+      List(
+        ("/", List()),
+        ("bin", List(First)),
+        ("boot", List(Middle)),
+        ("etc", List(Middle)),
+        ("home", List(Middle)),
+        ("root", List(Middle)),
+        ("usr", List(Middle)),
+        ("var", List(Last)),
+        ("majk", List(Middle, First))
+      )
+    )
+  }
+```
+---
+
+<!-- not sure if I should do it, to little time -->
+
+# What about duplicates?
+
+```scala
+  test("should produce multi-paddings - with duplicates") {
+    val oneLevelTree: Tree[String] =
+      Branch(
+        "/",
+        NonEmptyList
+          .of(
+            Leaf("bin"),
+            Branch("home", NonEmptyList.one(Leaf("majk"))),
+            Leaf("root"),
+            Leaf("majk")
+          )
+      )
+    assertInlineSnapshot(
+      BFSMultipadding.labelNodes(oneLevelTree),
+      List(
+        ("/", List()),
+        ("bin", List(First)),
+        ("home", List(Middle)),
+        ("root", List(Middle)),
+        ("majk", List(Last)),
+        ("majk", List(Middle, First))
+      )
+    )
+```
+
+
+---
+
+# Bonus
+
+B-trees https://planetscale.com/blog/btrees-and-database-indexes
 
 <!-- 
 ![](./img/Types-of-Tree-Data-Structure.webp)
