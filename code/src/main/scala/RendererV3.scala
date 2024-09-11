@@ -1,41 +1,42 @@
 import cats.Show
 import cats.syntax.all.*
-import scala.collection.mutable.Queue
+import BFS.Position
 
-class RendererV3 extends Renderer {
+object RendererV3 extends Renderer {
 
   def render[A: Show](tree: Tree[A]): String = {
-    println(breadthFirstList(tree))
-    "???"
+    val mapping = BFSExtended.labelNodes(tree).toMap
+    renderRecursive(tree, mapping)
   }
 
-  private def breadthFirstList[A](root: Tree[A]): List[A] = {
-    val q = Queue.empty[Tree[A]]
-    val results = scala.collection.mutable.ListBuffer.empty[A]
-    q.enqueue(root)
-    while (q.nonEmpty) {
-      val node = q.dequeue()
-      node match
-        case Tree.Branch(value, branches) =>
-          results.append(value)
-          q.enqueueAll(branches.toList)
-        case Tree.Leaf(value) =>
-          results.append(value)
+  private def renderRecursive[A: Show](
+      tree: Tree[A],
+      mapping: Map[A, List[Position]]
+  ): String = {
+    val positions = mapping.get(tree.getValue).get // TODO unsafe
+    val renderedPrefix = renderPositions(positions)
+    tree match {
+      case Tree.Branch(value, branches) =>
+        val renderedBranches =
+          branches.map(renderRecursive(_, mapping)).toList.mkString("\n")
+        show"$renderedPrefix $value\n$renderedBranches"
 
+      case Tree.Leaf(value) =>
+        show"$renderedPrefix $value"
     }
-    results.toList
   }
-  // private def labelNodes[A, Label](root: Tree[A])(f: A => Label): List[Tree[(A, Label)]] = {
-  //   val q = Queue.empty[Tree[A]]
-  //   val results = Queue.empty[Tree[(A, Label)]]
-  //   q.enqueue(root)
-  //   while(q.nonEmpty) {
-  //     val node = q.dequeue()
-  //     node match
-  //       case Tree.Branch(value, branches) =>
-  //       case Tree.Leaf(value) =>
 
-  //   }
-  //   ???
-  // }
+  private def renderPositions(positions: List[Position]) =
+    positions.zipWithIndex
+      .map((v, idx) => (v, idx == positions.size - 1))
+      .map(renderPosition)
+      .mkString
+
+  private def renderPosition(position: Position, isLast: Boolean) =
+    position match
+      case Position.First | Position.Middle if (isLast)  => "├──"
+      case Position.First | Position.Middle if (!isLast) => "│  "
+      case Position.Last if (isLast)                     => "└──"
+      case Position.Last if (!isLast)                    => "   "
+
 }

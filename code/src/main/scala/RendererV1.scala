@@ -1,7 +1,7 @@
 import cats.Show
 import cats.syntax.all.*
 
-class RendererV1 extends Renderer {
+object RendererV1 extends Renderer {
 
   def render[A: Show](tree: Tree[A]): String =
     tree match {

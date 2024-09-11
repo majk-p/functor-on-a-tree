@@ -63,7 +63,7 @@ class BFSTest extends munit.FunSuite with SnapshotAssertions {
 
   test("should produce multi-paddings") {
     assertInlineSnapshot(
-      BFSMultipadding.labelNodes(oneLevelTree),
+      BFSExtended.labelNodes(oneLevelTree),
       List(
         ("/", List()),
         ("bin", List(First)),
@@ -91,7 +91,7 @@ class BFSTest extends munit.FunSuite with SnapshotAssertions {
           )
       )
     assertInlineSnapshot(
-      BFSMultipadding.labelNodes(oneLevelTree),
+      BFSExtended.labelNodes(oneLevelTree),
       List(
         ("/", List()),
         ("bin", List(First)),

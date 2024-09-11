@@ -7,7 +7,7 @@ import snapshot4s.generated.snapshotConfig
 
 class RendererV1Test extends munit.FunSuite with SnapshotAssertions {
 
-  val renderer = new RendererV1
+  val renderer = RendererV1
 
   test("should render a simple tree") {
     val oneLevelTree: Tree[String] =

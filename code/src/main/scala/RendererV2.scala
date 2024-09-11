@@ -1,7 +1,7 @@
 import cats.Show
 import cats.syntax.all.*
 
-class RendererV2 extends Renderer {
+object RendererV2 extends Renderer {
 
   def render[A: Show](tree: Tree[A]): String =
     renderRecursive(tree, true)
