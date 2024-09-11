@@ -818,9 +818,9 @@ Now let's attach some info along the way
 ```
 
 ```scala
+          results.append((value, positions))
     }
     results.toList
-  }
 ```
 
 
@@ -830,15 +830,15 @@ Now let's attach some info along the way
 
 ```scala
     while (q.nonEmpty) {
-      val (node, paddings) = q.dequeue()
+      val (node, positions) = q.dequeue()
       node match
         case Tree.Branch(value, branches) =>
-          val branchesWithPaddings = attachPaddings(paddings)(branches.toList)
-          results.append((value, paddings))
-          q.enqueueAll(branchesWithPaddings)
+          val branchesWithPositions =
+            attachPositions(positions)(branches.toList)
+          results.append((value, positions))
+          q.enqueueAll(branchesWithPositions)
         case Tree.Leaf(value) =>
-          results.append((value, paddings))
-    }
+          results.append((value, positions))
 ```
 
 
@@ -848,24 +848,24 @@ Now let's attach some info along the way
 
 ```scala
     while (q.nonEmpty) {
-      val (node, paddings) = q.dequeue()
+      val (node, positions) = q.dequeue()
       node match
         case Tree.Branch(value, branches) =>
-          val branchesWithPaddings = attachPaddings(paddings)(branches.toList)
-          results.append((value, paddings))
-          q.enqueueAll(branchesWithPaddings)
+          val branchesWithPositions =
+            attachPositions(positions)(branches.toList)
+          results.append((value, positions))
+          q.enqueueAll(branchesWithPositions)
         case Tree.Leaf(value) =>
-          results.append((value, paddings))
-    }
+          results.append((value, positions))
 ```
 
 ```scala
-  private def attachPaddings[A](parentPaddings: List[Position])(
+
+  private def attachPositions[A](parantPositions: List[Position])(
       branches: List[Tree[A]]
   ): List[(Tree[A], List[Position])] =
     branches.zipWithIndex.map { case (tree, index) =>
-      (tree, parentPaddings.appended(calculatePadding(index, branches.size)))
-    }
+      (tree, parantPositions.appended(calculatePosition(index, branches.size)))
 ```
 
 ---
@@ -874,9 +874,9 @@ Now let's attach some info along the way
 
 ```scala
 
-  test("should produce multi-paddings") {
+  test("should produce extended positions") {
     assertInlineSnapshot(
-      BFSMultipadding.labelNodes(oneLevelTree),
+      BFSExtended.labelNodes(oneLevelTree),
       List(
         ("/", List()),
         ("bin", List(First)),
@@ -886,42 +886,38 @@ Now let's attach some info along the way
         ("root", List(Middle)),
         ("usr", List(Middle)),
         ("var", List(Last)),
-        ("majk", List(Middle, First))
+        ("majk", List(Middle, Last))
       )
     )
   }
 ```
+
+<!-- NOTE: we are not handling duplicates here, that's a bonus question -->
+
 ---
 
-<!-- not sure if I should do it, to little time -->
-
-# What about duplicates?
+# Works like a charm
 
 ```scala
-  test("should produce multi-paddings - with duplicates") {
-    val oneLevelTree: Tree[String] =
-      Branch(
-        "/",
-        NonEmptyList
-          .of(
-            Leaf("bin"),
-            Branch("home", NonEmptyList.one(Leaf("majk"))),
-            Leaf("root"),
-            Leaf("majk")
-          )
-      )
-    assertInlineSnapshot(
-      BFSMultipadding.labelNodes(oneLevelTree),
-      List(
-        ("/", List()),
-        ("bin", List(First)),
-        ("home", List(Middle)),
-        ("root", List(Middle)),
-        ("majk", List(Last)),
-        ("majk", List(Middle, First))
-      )
-    )
+BFSTest:
+  + should visit nodes in expected order 0.078s
+  + should produce paddings 0.018s
+  + should produce extended positions 0.007s
 ```
+
+---
+
+# We are ready
+
+
+---
+
+# Final challenge
+
+Let's implement `RendererV3` 🚀
+
+
+
 
 
 ---

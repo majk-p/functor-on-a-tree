@@ -61,7 +61,7 @@ class BFSTest extends munit.FunSuite with SnapshotAssertions {
     )
   }
 
-  test("should produce multi-paddings") {
+  test("should produce extended positions") {
     assertInlineSnapshot(
       BFSExtended.labelNodes(oneLevelTree),
       List(
@@ -73,12 +73,12 @@ class BFSTest extends munit.FunSuite with SnapshotAssertions {
         ("root", List(Middle)),
         ("usr", List(Middle)),
         ("var", List(Last)),
-        ("majk", List(Middle, First))
+        ("majk", List(Middle, Last))
       )
     )
   }
 
-  test("should produce multi-paddings - with duplicates") {
+  test("should produce extended positions - with duplicates") {
     val oneLevelTree: Tree[String] =
       Branch(
         "/",
@@ -98,7 +98,7 @@ class BFSTest extends munit.FunSuite with SnapshotAssertions {
         ("home", List(Middle)),
         ("root", List(Middle)),
         ("majk", List(Last)),
-        ("majk", List(Middle, First))
+        ("majk", List(Middle, Last))
       )
     )
   }

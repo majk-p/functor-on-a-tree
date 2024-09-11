@@ -636,7 +636,7 @@ sourceFromFile("code/src/main/scala/BFS.scala", Some(25, 29))
 ```
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(10,10))
+sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(10,10))
 ```
 
 ---
@@ -644,20 +644,11 @@ sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(10,10))
 # Extended queue and result type
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(10,14))
+sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(10,14))
 ```
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(23,25))
-```
-
-
----
-
-# Extended queue and result type
-
-```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(14,23))
+sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(23,25))
 ```
 
 
@@ -666,11 +657,20 @@ sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(14,23))
 # Extended queue and result type
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(14,23))
+sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(14,23))
+```
+
+
+---
+
+# Extended queue and result type
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(14,23))
 ```
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(27,32))
+sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(27,32))
 ```
 
 ---
@@ -680,15 +680,33 @@ sourceFromFile("code/src/main/scala/BFSMultipadding.scala", Some(27,32))
 ```scala mdoc:passthrough
 sourceFromFile("code/src/test/scala/BFSTest.scala", Some(63, 79))
 ```
+
+<!-- NOTE: we are not handling duplicates here, that's a bonus question -->
+
 ---
 
-<!-- not sure if I should do it, to little time -->
+# Works like a charm
 
-# What about duplicates?
-
-```scala mdoc:passthrough
-sourceFromFile("code/src/test/scala/BFSTest.scala", Some(81, 103))
+```scala
+BFSTest:
+  + should visit nodes in expected order 0.078s
+  + should produce paddings 0.018s
+  + should produce extended positions 0.007s
 ```
+
+---
+
+# We are ready
+
+
+---
+
+# Final challenge
+
+Let's implement `RendererV3` 🚀
+
+
+
 
 
 ---
