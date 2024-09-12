@@ -50,9 +50,9 @@ class Meetuptest extends munit.FunSuite with SnapshotAssertions {
   }
 
   object events {
-    val event10 = Event(10, Date(2024, 5, 15))
-    val event11 = Event(11, Date(2024, 7, 2))
-    val event12 = Event(12, Date(2024, 9, 17))
+    val event10 = Event(10, "15.05.2024")
+    val event11 = Event(11, "2.07.2024")
+    val event12 = Event(12, "17.09.2024")
   }
 
   test("should render a simple tree") {
@@ -77,7 +77,7 @@ class Meetuptest extends munit.FunSuite with SnapshotAssertions {
               )
             ),
             Branch(
-              events.event11,
+              events.event12,
               NonEmptyList.of(
                 Branch(talks.functorOnTree, NonEmptyList.of(Leaf(speakers.michal))),
                 Branch(talks.gearingTowarsOx, NonEmptyList.of(Leaf(speakers.tomasz)))
@@ -85,21 +85,20 @@ class Meetuptest extends munit.FunSuite with SnapshotAssertions {
             )
           )
       )
-    println(s"${renderer.render(meetup)}")
     assertInlineSnapshot(
       renderer.render(meetup),
       """ Wrocław Scala User Group
-        |├── 📅 Sun Jun 15 00:00:00 CEST 3924 Meeting #10
+        |├── 📅 15.05.2024 Meeting #10
         |│  ├── 🎤 All the things that Metals doesn't do
         |│  │  └── 🧍 Katarzyna Marek 🌐 https://www.linkedin.com/in/katarzyna-marek-a74790193
         |│  └── 🎤 Grackle - Scala GraphQL Server
         |│     └── 🧍Rafał Piotrowski 🌐 https://www.linkedin.com/in/rafalpiotrowski
-        |└── 📅 Sat Aug 02 00:00:00 CEST 3924 Meeting #11
+        |├── 📅 2.07.2024 Meeting #11
         |│  ├── 🎤 Human(o)IDs — designing IDs for both machines AND humans
         |│  │  └── 🧍 Jakub Wojnowski 🌐 https://www.linkedin.com/in/jakub-wojnowski
         |│  └── 🎤 Scala 3 features you probably haven't used (yet)
         |│     └── 🧍   Kacper Korban 🌐 https://www.linkedin.com/in/kacperfkorban
-        |└── 📅 Sat Aug 02 00:00:00 CEST 3924 Meeting #11
+        |└── 📅 17.09.2024 Meeting #12
         |   ├── 🎤 What does the functor do on the tree?
         |   │  └── 🧍   Michał Pawlik 🌐 https://michal.pawlik.dev
         |   └── 🎤 Gearing towards Ox: A look at structured concurrency and direct style Scala

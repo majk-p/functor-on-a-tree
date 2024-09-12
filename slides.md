@@ -263,6 +263,38 @@ Draw a tree of meetup editions with topics as sub-trees 🌳 and speaker info as
 
 ---
 
+# Goal 🥅
+
+```bash
+ Wrocław Scala User Group
+├── 📅 15.05.2024 Meeting #10
+│  ├── 🎤 All the things that Metals doesn't do
+│  │  └── 🧍 Katarzyna Marek 🌐 https://www.linkedin.com/in/katarzyna-marek-a74790193
+│  └── 🎤 Grackle - Scala GraphQL Server
+│     └── 🧍Rafał Piotrowski 🌐 https://www.linkedin.com/in/rafalpiotrowski
+├── 📅 2.07.2024 Meeting #11
+│  ├── 🎤 Human(o)IDs — designing IDs for both machines AND humans
+│  │  └── 🧍 Jakub Wojnowski 🌐 https://www.linkedin.com/in/jakub-wojnowski
+│  └── 🎤 Scala 3 features you probably haven't used (yet)
+│     └── 🧍   Kacper Korban 🌐 https://www.linkedin.com/in/kacperfkorban
+└── 📅 17.09.2024 Meeting #12
+   ├── 🎤 What does the functor do on the tree?
+   │  └── 🧍   Michał Pawlik 🌐 https://michal.pawlik.dev
+   └── 🎤 Gearing towards Ox: A look at structured concurrency and direct style Scala
+      └── 🧍   Tomasz Godzik 🌐 https://twitter.com/TomekGodzik
+```
+
+---
+
+# But how 🤔
+
+* Renderer capable of drawing **simple** structure
+* Renderer capable of drawing **nested** structure
+* Model meetup details
+* Render tree with meetup details
+
+---
+
 # Renderer
 
 <!-- _class: line-numbers -->
@@ -568,11 +600,11 @@ Let's do depth first search on a simplified tree
 # Basic BFS
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFS.scala", Some(7, 11))
+sourceFromFile("code/src/main/scala/BFS.scala", Some(7, 12))
 ```
 🙈
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFS.scala", Some(20, 22))
+sourceFromFile("code/src/main/scala/BFS.scala", Some(21, 22))
 ```
 
 ---
@@ -648,7 +680,7 @@ sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(10,14))
 ```
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(23,25))
+sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(24,25))
 ```
 
 
@@ -697,6 +729,96 @@ BFSTest:
 ---
 
 # We are ready
+
+---
+
+# We are ready
+
+`RendererV3` should first do BFS to learn the structure, then DFS to draw in correct order
+
+---
+
+# DFS code
+
+---
+
+# DFS test
+
+---
+
+# DFS result
+
+---
+
+# Final challenge
+
+
+---
+
+# Model the data 
+
+TODO
+
+
+---
+
+# Tree of `String`
+
+We need to turn `Tree[Event | Talk | Speaker | String]` into `Tree[String]`
+
+
+
+---
+
+<!-- _transition: drop -->
+
+# This gonna be rude
+
+---
+
+<!-- _transition: drop -->
+
+
+# The F word
+
+---
+
+# Functor
+
+---
+
+# Functor
+
+Provided we have `Event | Talk | Speaker| String => String`
+
+Functor can turn `Tree[Event | Talk | Speaker | String]` into `Tree[String]`
+
+<!-- 
+TODO MP remove `: Show` and bind the tree renderer to Tree[String]  insted 
+Then use `map` to convert the tree
+-->
+
+
+---
+
+```bash
+ Wrocław Scala User Group
+├── 📅 15.05.2024 Meeting #10
+│  ├── 🎤 All the things that Metals doesn't do
+│  │  └── 🧍 Katarzyna Marek 🌐 https://www.linkedin.com/in/katarzyna-marek-a74790193
+│  └── 🎤 Grackle - Scala GraphQL Server
+│     └── 🧍Rafał Piotrowski 🌐 https://www.linkedin.com/in/rafalpiotrowski
+├── 📅 2.07.2024 Meeting #11
+│  ├── 🎤 Human(o)IDs — designing IDs for both machines AND humans
+│  │  └── 🧍 Jakub Wojnowski 🌐 https://www.linkedin.com/in/jakub-wojnowski
+│  └── 🎤 Scala 3 features you probably haven't used (yet)
+│     └── 🧍   Kacper Korban 🌐 https://www.linkedin.com/in/kacperfkorban
+└── 📅 17.09.2024 Meeting #12
+   ├── 🎤 What does the functor do on the tree?
+   │  └── 🧍   Michał Pawlik 🌐 https://michal.pawlik.dev
+   └── 🎤 Gearing towards Ox: A look at structured concurrency and direct style Scala
+      └── 🧍   Tomasz Godzik 🌐 https://twitter.com/TomekGodzik
+```
 
 
 ---

@@ -1,7 +1,8 @@
 import cats.Show
 import java.util.Date
+import java.text.SimpleDateFormat
 
-case class Event(edition: Int, date: Date)
+case class Event(edition: Int, date: String)
 case class Talk(title: String, summary: String = "")
 case class Speaker(name: String, social: String)
 
