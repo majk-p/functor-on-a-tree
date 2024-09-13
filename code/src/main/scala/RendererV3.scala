@@ -4,7 +4,7 @@ import BFS.Position
 
 object RendererV3 extends Renderer {
 
-  def render[A: Show](tree: Tree[A]): String = {
+  def render(tree: Tree[String]): String = {
     val mapping = BFSExtended.labelNodes(tree).toMap
     renderRecursive(tree, mapping)
   }

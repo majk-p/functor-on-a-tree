@@ -285,8 +285,7 @@ Draw a tree of meetup editions with topics as sub-trees 🌳 and speaker info as
 
 ```scala
 trait Renderer {
-  // `Show` means that we can turn `A` into a nice `String`
-  def render[A: Show](tree: Tree[A]): String
+  def render(tree: Tree[String]): String
 }
 ```
 ---
@@ -311,7 +310,7 @@ Let's start with drawing this:
 
 
 ```scala
-  test("should render a simple tree") {
+  test("should render a simple tree".ignore) {
     val oneLevelTree: Tree[String] =
       Branch(
         "/",
@@ -342,7 +341,7 @@ Let's start with drawing this:
 <!-- _class: line-numbers -->
 
 ```scala
-  def render[A: Show](tree: Tree[A]): String =
+  def render(tree: Tree[String]): String =
     tree match {
       case Tree.Branch(value, branches) =>
         val renderedBranches =
@@ -392,7 +391,7 @@ Snapshot not equal
 <!-- _class: line-numbers -->
 
 ```scala
-  def render[A: Show](tree: Tree[A]): String =
+  def render(tree: Tree[String]): String =
     renderRecursive(tree, true)
 
   private def renderRecursive[A: Show](tree: Tree[A], isLast: Boolean): String =
@@ -481,7 +480,7 @@ Can we handle nested structures?
 # Let's test it
 
 ```scala
-  test("should render a simple tree") {
+  test("should render one level tree".ignore) {
     val oneLevelTree: Tree[String] =
       Branch(
         "/",
@@ -544,7 +543,7 @@ home
 <!-- _class: line-numbers -->
 
 ```scala
-  def render[A: Show](tree: Tree[A]): String =
+  def render(tree: Tree[String]): String =
     renderRecursive(tree, true)
 
   private def renderRecursive[A: Show](tree: Tree[A], isLast: Boolean): String =
@@ -585,7 +584,7 @@ home
 <!-- _class: line-numbers -->
 
 ```scala
-  def render[A: Show](tree: Tree[A]): String =
+  def render(tree: Tree[String]): String =
     tree match {
       case Tree.Branch(value, branches) =>
         val renderedBranches =
@@ -954,7 +953,7 @@ BFSTest:
 ```scala
 object RendererV3 extends Renderer {
 
-  def render[A: Show](tree: Tree[A]): String = {
+  def render(tree: Tree[String]): String = {
     val mapping = BFSExtended.labelNodes(tree).toMap
     renderRecursive(tree, mapping)
   }
@@ -1140,9 +1139,15 @@ val complexTree: Tree[String] =
 
 
 ```scala
-case class Event(edition: Int, date: String)
-case class Talk(title: String)
-case class Speaker(name: String, social: String)
+case class Event(edition: Int, date: String) {
+  val render = s"📅 ${date} Meeting #${edition}"
+}
+case class Talk(title: String) {
+  val render = s"🎤 ${title}"
+}
+case class Speaker(name: String, social: String) {
+  val render = f"🧍${name}%16s 🌐 ${social}"
+}
 ```
 
 ---
@@ -1179,8 +1184,6 @@ case class Speaker(name: String, social: String)
   }
 ```
 
-
-
 ---
 
 # Tree of `String`
@@ -1214,13 +1217,99 @@ Provided we have `Event | Talk | Speaker| String => String`
 
 Functor can turn `Tree[Event | Talk | Speaker | String]` into `Tree[String]`
 
-<!-- 
-TODO MP remove `: Show` and bind the tree renderer to Tree[String]  insted 
-Then use `map` to convert the tree
--->
+---
+
+
+# `Functor[F[_]]` on a `Tree[A]` 🌳
+
+---
+
+
+# `Functor` on a `Tree[A]` 🌳
+
+<!-- _class: line-numbers -->
+
+```scala
+object Tree {
+  given Functor[Tree] = new Functor[Tree] {
+    def map[A, B](fa: Tree[A])(f: A => B): Tree[B] =
+      fa match
+        case Branch(value, branches) =>
+          Branch(
+            f(value),
+            branches.map(map(_)(f))
+          )
+        case Leaf(value) => Leaf(f(value))
+  }
+
+}
+```
+---
+
+# `Functor[F[_]]` on a `Tree[A]` 🌳
+
+Functor can turn `Tree[Event | Talk | Speaker | String]` into `Tree[String]`
+
+```scala
+  def renderMeetup(meetupNode: Event | Talk | Speaker | String) =
+    meetupNode match {
+      case v: Event   => v.render
+      case v: Talk    => v.render
+      case v: Speaker => v.render
+      case v: String  => v
+    }
+```
+```scala
+    val meetup: Tree[Event | Talk | Speaker | String] =
+    val converted: Tree[String] = meetup.map(renderMeetup)
+```
+---
+
+# `Functor[F[_]]` on a `Tree[A]` 🌳
+
+```scala
+    val meetup: Tree[Event | Talk | Speaker | String] =
+      Branch(
+        "Wrocław Scala User Group",
+        NonEmptyList
+          .of(
+            Branch(
+              events.event10,
+              NonEmptyList.of(
+                Branch(talks.metals, NonEmptyList.of(Leaf(speakers.katarzyna))),
+                Branch(talks.grackle, NonEmptyList.of(Leaf(speakers.rafal)))
+              )
+            ),
+            Branch(
+              events.event11,
+              NonEmptyList.of(
+                Branch(talks.humanoIDs, NonEmptyList.of(Leaf(speakers.jakub))),
+                Branch(talks.scala3Features, NonEmptyList.of(Leaf(speakers.kacper)))
+              )
+            ),
+            Branch(
+              events.event12,
+              NonEmptyList.of(
+                Branch(talks.functorOnTree, NonEmptyList.of(Leaf(speakers.michal))),
+                Branch(talks.gearingTowarsOx, NonEmptyList.of(Leaf(speakers.tomasz)))
+              )
+            )
+          )
+      )
+```
+
+---
+<!-- _transition: fade -->
+
+# Final result
+
+![bg blur:5px brightness:0.3](./img/forest2.jpg)
 
 
 ---
+<!-- _transition: fade -->
+
+# Final result
 
 ```bash
  Wrocław Scala User Group
@@ -1240,23 +1329,75 @@ Then use `map` to convert the tree
    └── 🎤 Gearing towards Ox: A look at structured concurrency and direct style Scala
       └── 🧍   Tomasz Godzik 🌐 https://twitter.com/TomekGodzik
 ```
+![bg blur:5px brightness:0.3](./img/forest2.jpg)
 
+---
+<!-- _transition: fade -->
+
+# Takeaways
+
+![bg blur:5px brightness:0.3](./img/forest2.jpg)
+
+* Kinds of traversal algorithms - DFS and BFS
+* Some of them are specialized like our labeling and rendering
+* Others are generic like `map`
+* Mixing imperative and FP is good and can be fun!
+
+---
+<!-- _transition: fade -->
+
+
+![bg blur:5px brightness:0.3](./img/forest2.jpg)
+
+
+# Thank you!
+
+<style scoped>
+/* Styling for centering (required in default theme) */
+h1, h2, h3, h4, h5, p, ul, li {
+  text-align: center;
+}
+</style>
+
+Keep in touch! 🤝
+
+Blog: [blog.michal.pawlik.dev](https://blog.michal.pawlik.dev)
+Linkedin: [Michał Pawlik](https://www.linkedin.com/in/michał-pawlik/)
+Github: [majk-p](https://github.com/majk-p)
+Mastodon: [majkp@hostux.social](https://hostux.social/@majkp)
 
 ---
 
-# Final challenge
-
-Let's implement `RendererV3` 🚀
+![bg blur:5px brightness:0.3](./img/forest2.jpg)
 
 
+# Thank you!
 
+<style scoped>
+/* Styling for centering (required in default theme) */
+h1, h2, h3, h4, h5, p, ul, li {
+  text-align: center;
+}
+</style>
 
+Keep in touch! 🤝
+
+![width:350px](./img/qr-code-repo.png)
+
+Slides available at https://github.com/majk-p/functor-on-a-tree
 
 ---
 
 # Bonus
+<!-- _transition: fade -->
 
-B-trees https://planetscale.com/blog/btrees-and-database-indexes
+![bg blur:2px brightness:0.3](./img/tree2-upside-down.jpg)
+
+
+- B-trees https://planetscale.com/blog/btrees-and-database-indexes
+- Purely functional data structures
+  - BFS https://www.cs.tufts.edu/~nr/cs257/archive/chris-okasaki/breadth-first.pdf
+  - https://cstheory.stackexchange.com/questions/1539/whats-new-in-purely-functional-data-structures-since-okasaki
 
 <!-- 
 ![](./img/Types-of-Tree-Data-Structure.webp)

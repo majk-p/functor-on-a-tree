@@ -299,7 +299,7 @@ Draw a tree of meetup editions with topics as sub-trees 🌳 and speaker info as
 <!-- _class: line-numbers -->
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/renderer.scala", (3, 6))
+sourceFromFile("code/src/main/scala/renderer.scala", (1, 3))
 ```
 ---
 
@@ -806,7 +806,7 @@ sourceFromFile("code/src/test/scala/RendererV3Test.scala", (64, 68), (126, 126),
 
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/meetup.scala", (3, 5))
+sourceFromFile("code/src/main/scala/meetup.scala", (3, 11))
 ```
 
 ---
@@ -817,8 +817,6 @@ sourceFromFile("code/src/main/scala/meetup.scala", (3, 5))
 ```scala mdoc:passthrough
 sourceFromFile("code/src/test/scala/MeetupTest.scala", (25, 50))
 ```
-
-
 
 ---
 
@@ -853,13 +851,53 @@ Provided we have `Event | Talk | Speaker| String => String`
 
 Functor can turn `Tree[Event | Talk | Speaker | String]` into `Tree[String]`
 
-<!-- 
-TODO MP remove `: Show` and bind the tree renderer to Tree[String]  insted 
-Then use `map` to convert the tree
--->
+---
+
+
+# `Functor[F[_]]` on a `Tree[A]` 🌳
+
+---
+
+
+# `Functor` on a `Tree[A]` 🌳
+
+<!-- _class: line-numbers -->
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/tree.scala", (12, 24))
+```
+---
+
+# `Functor[F[_]]` on a `Tree[A]` 🌳
+
+Functor can turn `Tree[Event | Talk | Speaker | String]` into `Tree[String]`
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/test/scala/MeetupTest.scala", (52, 58))
+```
+```scala mdoc:passthrough
+sourceFromFile("code/src/test/scala/MeetupTest.scala", (62, 62), (90, 90))
+```
+---
+
+# `Functor[F[_]]` on a `Tree[A]` 🌳
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/test/scala/MeetupTest.scala", (62, 89))
+```
+
+---
+<!-- _transition: fade -->
+
+# Final result
+
+![bg blur:5px brightness:0.3](./img/forest2.jpg)
 
 
 ---
+<!-- _transition: fade -->
+
+# Final result
 
 ```bash
  Wrocław Scala User Group
@@ -879,23 +917,75 @@ Then use `map` to convert the tree
    └── 🎤 Gearing towards Ox: A look at structured concurrency and direct style Scala
       └── 🧍   Tomasz Godzik 🌐 https://twitter.com/TomekGodzik
 ```
+![bg blur:5px brightness:0.3](./img/forest2.jpg)
 
+---
+<!-- _transition: fade -->
+
+# Takeaways
+
+![bg blur:5px brightness:0.3](./img/forest2.jpg)
+
+* Kinds of traversal algorithms - DFS and BFS
+* Some of them are specialized like our labeling and rendering
+* Others are generic like `map`
+* Mixing imperative and FP is good and can be fun!
+
+---
+<!-- _transition: fade -->
+
+
+![bg blur:5px brightness:0.3](./img/forest2.jpg)
+
+
+# Thank you!
+
+<style scoped>
+/* Styling for centering (required in default theme) */
+h1, h2, h3, h4, h5, p, ul, li {
+  text-align: center;
+}
+</style>
+
+Keep in touch! 🤝
+
+Blog: [blog.michal.pawlik.dev](https://blog.michal.pawlik.dev)
+Linkedin: [Michał Pawlik](https://www.linkedin.com/in/michał-pawlik/)
+Github: [majk-p](https://github.com/majk-p)
+Mastodon: [majkp@hostux.social](https://hostux.social/@majkp)
 
 ---
 
-# Final challenge
-
-Let's implement `RendererV3` 🚀
+![bg blur:5px brightness:0.3](./img/forest2.jpg)
 
 
+# Thank you!
 
+<style scoped>
+/* Styling for centering (required in default theme) */
+h1, h2, h3, h4, h5, p, ul, li {
+  text-align: center;
+}
+</style>
 
+Keep in touch! 🤝
+
+![width:350px](./img/qr-code-repo.png)
+
+Slides available at https://github.com/majk-p/functor-on-a-tree
 
 ---
 
 # Bonus
+<!-- _transition: fade -->
 
-B-trees https://planetscale.com/blog/btrees-and-database-indexes
+![bg blur:2px brightness:0.3](./img/tree2-upside-down.jpg)
+
+
+- B-trees https://planetscale.com/blog/btrees-and-database-indexes
+- Purely functional data structures
+  - BFS https://www.cs.tufts.edu/~nr/cs257/archive/chris-okasaki/breadth-first.pdf
+  - https://cstheory.stackexchange.com/questions/1539/whats-new-in-purely-functional-data-structures-since-okasaki
 
 <!-- 
 ![](./img/Types-of-Tree-Data-Structure.webp)

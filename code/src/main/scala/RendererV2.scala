@@ -3,7 +3,7 @@ import cats.syntax.all.*
 
 object RendererV2 extends Renderer {
 
-  def render[A: Show](tree: Tree[A]): String =
+  def render(tree: Tree[String]): String =
     renderRecursive(tree, true)
 
   private def renderRecursive[A: Show](tree: Tree[A], isLast: Boolean): String =

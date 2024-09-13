@@ -1,15 +1,11 @@
 import cats.Show
 
-case class Event(edition: Int, date: String)
-case class Talk(title: String)
-case class Speaker(name: String, social: String)
-
-object Event {
-  given Show[Event] = event => s"📅 ${event.date} Meeting #${event.edition}"
+case class Event(edition: Int, date: String) {
+  val render = s"📅 ${date} Meeting #${edition}"
 }
-object Talk {
-  given Show[Talk] = talk => s"🎤 ${talk.title}"
+case class Talk(title: String) {
+  val render = s"🎤 ${title}"
 }
-object Speaker {
-  given Show[Speaker] = speaker => f"🧍${speaker.name}%16s 🌐 ${speaker.social}"
+case class Speaker(name: String, social: String) {
+  val render = f"🧍${name}%16s 🌐 ${social}"
 }

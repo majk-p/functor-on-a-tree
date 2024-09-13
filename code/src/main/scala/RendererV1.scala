@@ -3,7 +3,7 @@ import cats.syntax.all.*
 
 object RendererV1 extends Renderer {
 
-  def render[A: Show](tree: Tree[A]): String =
+  def render(tree: Tree[String]): String =
     tree match {
       case Tree.Branch(value, branches) =>
         val renderedBranches =

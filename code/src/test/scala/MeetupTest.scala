@@ -14,9 +14,9 @@ class Meetuptest extends munit.FunSuite with SnapshotAssertions {
   // workaround for compiler not deriving typeclass for union
   // see also https://github.com/iRevive/union-derivation/releases
   given Show[Event | Talk | Speaker | String] = _ match {
-    case v: Event   => v.show
-    case v: Talk    => v.show
-    case v: Speaker => v.show
+    case v: Event   => v.render
+    case v: Talk    => v.render
+    case v: Speaker => v.render
     case v: String  => v
   }
 
@@ -49,6 +49,14 @@ class Meetuptest extends munit.FunSuite with SnapshotAssertions {
     val event12 = Event(12, "17.09.2024")
   }
 
+  def renderMeetup(meetupNode: Event | Talk | Speaker | String) =
+    meetupNode match {
+      case v: Event   => v.render
+      case v: Talk    => v.render
+      case v: Speaker => v.render
+      case v: String  => v
+    }
+
   test("should render a simple tree") {
 
     val meetup: Tree[Event | Talk | Speaker | String] =
@@ -79,8 +87,9 @@ class Meetuptest extends munit.FunSuite with SnapshotAssertions {
             )
           )
       )
+    val converted: Tree[String] = meetup.map(renderMeetup)
     assertInlineSnapshot(
-      renderer.render(meetup),
+      renderer.render(converted),
       """ Wrocław Scala User Group
         |├── 📅 15.05.2024 Meeting #10
         |│  ├── 🎤 All the things that Metals doesn't do
