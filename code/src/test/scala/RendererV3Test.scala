@@ -31,7 +31,7 @@ class RendererV3Test extends munit.FunSuite with SnapshotAssertions {
     )
   }
 
-  test("should render a simple tree") {
+  test("should render one level tree") {
     val oneLevelTree: Tree[String] =
       Branch(
         "/",

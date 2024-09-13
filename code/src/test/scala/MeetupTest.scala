@@ -23,14 +23,10 @@ class Meetuptest extends munit.FunSuite with SnapshotAssertions {
   val renderer = RendererV3
 
   object speakers {
-    val katarzyna =
-      Speaker("Katarzyna Marek", "https://www.linkedin.com/in/katarzyna-marek-a74790193")
-    val rafal =
-      Speaker("Rafał Piotrowski", "https://www.linkedin.com/in/rafalpiotrowski")
-    val jakub =
-      Speaker("Jakub Wojnowski", "https://www.linkedin.com/in/jakub-wojnowski")
-    val kacper =
-      Speaker("Kacper Korban", "https://www.linkedin.com/in/kacperfkorban")
+    val katarzyna = Speaker("Katarzyna Marek", "https://www.linkedin.com/in/katarzyna-marek-a74790193")
+    val rafal = Speaker("Rafał Piotrowski", "https://www.linkedin.com/in/rafalpiotrowski")
+    val jakub = Speaker("Jakub Wojnowski", "https://www.linkedin.com/in/jakub-wojnowski")
+    val kacper = Speaker("Kacper Korban", "https://www.linkedin.com/in/kacperfkorban")
     val michal = Speaker("Michał Pawlik", "https://michal.pawlik.dev")
     val tomasz = Speaker("Tomasz Godzik", "https://twitter.com/TomekGodzik")
   }
@@ -44,9 +40,7 @@ class Meetuptest extends munit.FunSuite with SnapshotAssertions {
     val scala3Features = Talk("Scala 3 features you probably haven't used (yet)")
     // edition 12
     val functorOnTree = Talk("What does the functor do on the tree?")
-    val gearingTowarsOx = Talk(
-      "Gearing towards Ox: A look at structured concurrency and direct style Scala"
-    )
+    val gearingTowarsOx = Talk("Gearing towards Ox: A look at structured concurrency and direct style Scala")
   }
 
   object events {

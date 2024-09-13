@@ -9,15 +9,14 @@ marp: true
 ```scala mdoc:invisible
 import scala.io.Source
 
-def sourceFromFile(file: String, fromTo: Option[(Int, Int)] = None) = println({
-  fromTo match {
-    case None => linesFromFile(file)
-    case Some((from, to)) =>
-      linesFromFile(file).zipWithIndex
-        .filter { case (_, line) =>
-          (line+1) >= from && (line+1) <= to
-        }
-        .map(_._1)
+def sourceFromFile(file: String, fromTo: (Int, Int)*) = println({
+  if(fromTo.isEmpty) linesFromFile(file)
+  else fromTo.flatMap { case (from, to) =>
+    linesFromFile(file).zipWithIndex
+      .filter { case (_, line) =>
+        (line+1) >= from && (line+1) <= to
+      }
+      .map(_._1)
   }
 }.mkString("```scala\n", "\n", "\n```"))
 
@@ -156,7 +155,7 @@ they can spot...
 <!-- _class: line-numbers -->
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/tree.scala", Some(3, 5))
+sourceFromFile("code/src/main/scala/tree.scala", (3, 5))
 ```
 
 ---
@@ -300,7 +299,7 @@ Draw a tree of meetup editions with topics as sub-trees 🌳 and speaker info as
 <!-- _class: line-numbers -->
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/renderer.scala", Some(3, 6))
+sourceFromFile("code/src/main/scala/renderer.scala", (3, 6))
 ```
 ---
 
@@ -324,7 +323,7 @@ Let's start with drawing this:
 
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/test/scala/RendererV1Test.scala", Some(12, 33))
+sourceFromFile("code/src/test/scala/RendererV1Test.scala", (12, 33))
 ```
 
 ---
@@ -334,7 +333,7 @@ sourceFromFile("code/src/test/scala/RendererV1Test.scala", Some(12, 33))
 <!-- _class: line-numbers -->
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/RendererV1.scala", Some(6, 17))
+sourceFromFile("code/src/main/scala/RendererV1.scala", (6, 17))
 ```
 
 ---
@@ -373,7 +372,7 @@ Snapshot not equal
 <!-- _class: line-numbers -->
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/RendererV2.scala", Some(6, 25))
+sourceFromFile("code/src/main/scala/RendererV2.scala", (6, 25))
 ```
 
 ---
@@ -382,7 +381,7 @@ sourceFromFile("code/src/main/scala/RendererV2.scala", Some(6, 25))
 
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/test/scala/RendererV2Test.scala", Some(12, 32))
+sourceFromFile("code/src/test/scala/RendererV2Test.scala", (12, 32))
 ```
 
 ---
@@ -423,7 +422,7 @@ Can we handle nested structures?
 # Let's test it
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/test/scala/RendererV2Test.scala", Some(34, 62))
+sourceFromFile("code/src/test/scala/RendererV2Test.scala", (34, 62))
 ```
 
 ---
@@ -458,7 +457,7 @@ home
 <!-- _class: line-numbers -->
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/RendererV2.scala", Some(6, 25))
+sourceFromFile("code/src/main/scala/RendererV2.scala", (6, 25))
 ```
 
 
@@ -480,7 +479,7 @@ sourceFromFile("code/src/main/scala/RendererV2.scala", Some(6, 25))
 <!-- _class: line-numbers -->
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/RendererV1.scala", Some(6, 17))
+sourceFromFile("code/src/main/scala/RendererV1.scala", (6, 17))
 ```
 
 ![bg 100% right:40%](./img/Depth-First-Search.gif)
@@ -600,11 +599,11 @@ Let's do depth first search on a simplified tree
 # Basic BFS
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFS.scala", Some(7, 12))
+sourceFromFile("code/src/main/scala/BFS.scala", (7, 12))
 ```
 🙈
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFS.scala", Some(21, 22))
+sourceFromFile("code/src/main/scala/BFS.scala", (21, 22))
 ```
 
 ---
@@ -614,7 +613,7 @@ sourceFromFile("code/src/main/scala/BFS.scala", Some(21, 22))
 <!-- _class: line-numbers -->
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFS.scala", Some(8, 23))
+sourceFromFile("code/src/main/scala/BFS.scala", (8, 23))
 ```
 
 ---
@@ -622,7 +621,7 @@ sourceFromFile("code/src/main/scala/BFS.scala", Some(8, 23))
 # Let's test it
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/test/scala/BFSTest.scala", Some(10, 31))
+sourceFromFile("code/src/test/scala/BFSTest.scala", (10, 31))
 ```
 
 ---
@@ -656,7 +655,7 @@ Now let's attach some info along the way
 # Node positioning
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFS.scala", Some(25, 29))
+sourceFromFile("code/src/main/scala/BFS.scala", (25, 29))
 ```
 
 ---
@@ -664,11 +663,11 @@ sourceFromFile("code/src/main/scala/BFS.scala", Some(25, 29))
 # Node positioning
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFS.scala", Some(25, 29))
+sourceFromFile("code/src/main/scala/BFS.scala", (25, 29))
 ```
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(10,10))
+sourceFromFile("code/src/main/scala/BFSExtended.scala", (10,10))
 ```
 
 ---
@@ -676,20 +675,11 @@ sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(10,10))
 # Extended queue and result type
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(10,14))
+sourceFromFile("code/src/main/scala/BFSExtended.scala", (10,14))
 ```
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(24,25))
-```
-
-
----
-
-# Extended queue and result type
-
-```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(14,23))
+sourceFromFile("code/src/main/scala/BFSExtended.scala", (24,25))
 ```
 
 
@@ -698,11 +688,20 @@ sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(14,23))
 # Extended queue and result type
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(14,23))
+sourceFromFile("code/src/main/scala/BFSExtended.scala", (14,23))
+```
+
+
+---
+
+# Extended queue and result type
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFSExtended.scala", (14,23))
 ```
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(27,32))
+sourceFromFile("code/src/main/scala/BFSExtended.scala", (27,32))
 ```
 
 ---
@@ -710,7 +709,7 @@ sourceFromFile("code/src/main/scala/BFSExtended.scala", Some(27,32))
 # Let's test it
 
 ```scala mdoc:passthrough
-sourceFromFile("code/src/test/scala/BFSTest.scala", Some(63, 79))
+sourceFromFile("code/src/test/scala/BFSTest.scala", (63, 79))
 ```
 
 <!-- NOTE: we are not handling duplicates here, that's a bonus question -->
@@ -734,30 +733,91 @@ BFSTest:
 
 # We are ready
 
-`RendererV3` should first do BFS to learn the structure, then DFS to draw in correct order
+- `RendererV3` should first do BFS to learn the structure, 
+- then DFS to draw in correct order
+
+---
+<!-- _class: line-numbers -->
+# `RendererV3` implementation
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/RendererV3.scala", (5, 10), (43, 43))
+```
+
+---
+<!-- _class: line-numbers -->
+# `RendererV3` implementation
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/RendererV3.scala", (12, 27))
+```
+
+---
+<!-- _class: line-numbers -->
+# `RendererV3` implementation
+
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/RendererV3.scala", (29, 41))
+```
 
 ---
 
-# DFS code
+
+# `RendererV3` test
+
+```scala
+val complexTree: Tree[String] =
+```
 
 ---
 
-# DFS test
+
+# `RendererV3` test
+
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/test/scala/RendererV3Test.scala", (65, 126))
+```
 
 ---
 
-# DFS result
+# `RendererV3` test
+
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/test/scala/RendererV3Test.scala", (64, 68), (126, 126), (128, 152))
+```
 
 ---
 
 # Final challenge
+
+![](./img/meetup.png)
 
 
 ---
 
 # Model the data 
 
-TODO
+---
+
+# Model the data 
+
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/meetup.scala", (3, 5))
+```
+
+---
+
+# Model the data 
+
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/test/scala/MeetupTest.scala", (25, 50))
+```
+
 
 
 ---

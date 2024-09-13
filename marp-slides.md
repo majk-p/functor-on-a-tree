@@ -944,30 +944,241 @@ BFSTest:
 
 # We are ready
 
-`RendererV3` should first do BFS to learn the structure, then DFS to draw in correct order
+- `RendererV3` should first do BFS to learn the structure, 
+- then DFS to draw in correct order
+
+---
+<!-- _class: line-numbers -->
+# `RendererV3` implementation
+
+```scala
+object RendererV3 extends Renderer {
+
+  def render[A: Show](tree: Tree[A]): String = {
+    val mapping = BFSExtended.labelNodes(tree).toMap
+    renderRecursive(tree, mapping)
+  }
+```
+
+---
+<!-- _class: line-numbers -->
+# `RendererV3` implementation
+
+```scala
+  private def renderRecursive[A: Show](
+      tree: Tree[A],
+      mapping: Map[A, List[Position]]
+  ): String = {
+    val positions = mapping.get(tree.getValue).getOrElse(List.empty)
+    val renderedPrefix = renderPositions(positions)
+    tree match {
+      case Tree.Branch(value, branches) =>
+        val renderedBranches =
+          branches.map(renderRecursive(_, mapping)).toList.mkString("\n")
+        show"$renderedPrefix $value\n$renderedBranches"
+
+      case Tree.Leaf(value) =>
+        show"$renderedPrefix $value"
+    }
+  }
+```
+
+---
+<!-- _class: line-numbers -->
+# `RendererV3` implementation
+
+
+```scala
+  private def renderPositions(positions: List[Position]) =
+    positions.zipWithIndex
+      .map((position, idx) => (position, idx == positions.size - 1))
+      .map(renderPosition)
+      .mkString
+
+  private def renderPosition(position: Position, isLast: Boolean) =
+    position match {
+      case Position.First | Position.Middle if (isLast)  => "├──"
+      case Position.First | Position.Middle if (!isLast) => "│  "
+      case Position.Last if (isLast)                     => "└──"
+      case Position.Last if (!isLast)                    => "   "
+    }
+```
 
 ---
 
-# DFS code
+
+# `RendererV3` test
+
+```scala
+val complexTree: Tree[String] =
+```
 
 ---
 
-# DFS test
+
+# `RendererV3` test
+
+
+```scala
+    val complexTree: Tree[String] =
+      Branch(
+        "/",
+        NonEmptyList.of(
+          Branch(
+            "home",
+            NonEmptyList.of(
+              Branch(
+                "Documents",
+                NonEmptyList.of(
+                  Leaf("report.pdf"),
+                  Leaf("thesis.docx")
+                )
+              ),
+              Branch(
+                "Projects",
+                NonEmptyList.of(
+                  Leaf("project1/src/main.scala"),
+                  Leaf("project2/test/java/Main.java")
+                )
+              )
+            )
+          ),
+          Branch(
+            "var",
+            NonEmptyList.of(
+              Leaf("log"),
+              Branch(
+                "www",
+                NonEmptyList.of(
+                  Leaf("html"),
+                  Leaf("css"),
+                  Leaf("js")
+                )
+              )
+            )
+          ),
+          Branch(
+            "usr",
+            NonEmptyList.of(
+              Branch(
+                "local",
+                NonEmptyList.of(
+                  Branch(
+                    "share",
+                    NonEmptyList.of(
+                      Leaf("man"),
+                      Branch(
+                        "doc",
+                        NonEmptyList.of(
+                          Leaf("README.md"),
+                          Leaf("LICENSE")
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+```
 
 ---
 
-# DFS result
+# `RendererV3` test
+
+
+```scala
+  test("should render a complex tree") {
+    val complexTree: Tree[String] =
+      Branch(
+        "/",
+        NonEmptyList.of(
+      )
+    assertInlineSnapshot(
+      renderer.render(complexTree),
+      """ /
+        |├── home
+        |│  ├── Documents
+        |│  │  ├── report.pdf
+        |│  │  └── thesis.docx
+        |│  └── Projects
+        |│     ├── project1/src/main.scala
+        |│     └── project2/test/java/Main.java
+        |├── var
+        |│  ├── log
+        |│  └── www
+        |│     ├── html
+        |│     ├── css
+        |│     └── js
+        |└── usr
+        |   └── local
+        |      └── share
+        |         ├── man
+        |         └── doc
+        |            ├── README.md
+        |            └── LICENSE""".stripMargin
+    )
+  }
+```
 
 ---
 
 # Final challenge
+
+![](./img/meetup.png)
 
 
 ---
 
 # Model the data 
 
-TODO
+---
+
+# Model the data 
+
+
+```scala
+case class Event(edition: Int, date: String)
+case class Talk(title: String)
+case class Speaker(name: String, social: String)
+```
+
+---
+
+# Model the data 
+
+
+```scala
+  object speakers {
+    val katarzyna = Speaker("Katarzyna Marek", "https://www.linkedin.com/in/katarzyna-marek-a74790193")
+    val rafal = Speaker("Rafał Piotrowski", "https://www.linkedin.com/in/rafalpiotrowski")
+    val jakub = Speaker("Jakub Wojnowski", "https://www.linkedin.com/in/jakub-wojnowski")
+    val kacper = Speaker("Kacper Korban", "https://www.linkedin.com/in/kacperfkorban")
+    val michal = Speaker("Michał Pawlik", "https://michal.pawlik.dev")
+    val tomasz = Speaker("Tomasz Godzik", "https://twitter.com/TomekGodzik")
+  }
+
+  object talks {
+    // edition 10
+    val metals = Talk("All the things that Metals doesn't do")
+    val grackle = Talk("Grackle - Scala GraphQL Server")
+    // edition 11
+    val humanoIDs = Talk("Human(o)IDs — designing IDs for both machines AND humans")
+    val scala3Features = Talk("Scala 3 features you probably haven't used (yet)")
+    // edition 12
+    val functorOnTree = Talk("What does the functor do on the tree?")
+    val gearingTowarsOx = Talk("Gearing towards Ox: A look at structured concurrency and direct style Scala")
+  }
+
+  object events {
+    val event10 = Event(10, "15.05.2024")
+    val event11 = Event(11, "2.07.2024")
+    val event12 = Event(12, "17.09.2024")
+  }
+```
+
 
 
 ---

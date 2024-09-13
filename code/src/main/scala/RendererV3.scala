@@ -13,7 +13,7 @@ object RendererV3 extends Renderer {
       tree: Tree[A],
       mapping: Map[A, List[Position]]
   ): String = {
-    val positions = mapping.get(tree.getValue).get // TODO unsafe
+    val positions = mapping.get(tree.getValue).getOrElse(List.empty)
     val renderedPrefix = renderPositions(positions)
     tree match {
       case Tree.Branch(value, branches) =>
@@ -28,15 +28,15 @@ object RendererV3 extends Renderer {
 
   private def renderPositions(positions: List[Position]) =
     positions.zipWithIndex
-      .map((v, idx) => (v, idx == positions.size - 1))
+      .map((position, idx) => (position, idx == positions.size - 1))
       .map(renderPosition)
       .mkString
 
   private def renderPosition(position: Position, isLast: Boolean) =
-    position match
+    position match {
       case Position.First | Position.Middle if (isLast)  => "├──"
       case Position.First | Position.Middle if (!isLast) => "│  "
       case Position.Last if (isLast)                     => "└──"
       case Position.Last if (!isLast)                    => "   "
-
+    }
 }
