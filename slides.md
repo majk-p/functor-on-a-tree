@@ -83,7 +83,7 @@ def linesFromFile(file: String) =
 ---
 <!-- _transition: fade -->
 
-# When a regular person goes into the woods
+# When people go into the woods
 
 they can spot...
 
@@ -102,7 +102,7 @@ they can spot...
 ---
 <!-- _transition: fade -->
 
-# But if **you** look carefully
+# But if they look **very** carefully
 
 ![bg blur:5px brightness:0.4](./img/tree-with-functor-1.jpg)
 
@@ -1038,8 +1038,3 @@ Slides available at https://github.com/majk-p/functor-on-a-tree
 - Purely functional data structures
   - BFS https://www.cs.tufts.edu/~nr/cs257/archive/chris-okasaki/breadth-first.pdf
   - https://cstheory.stackexchange.com/questions/1539/whats-new-in-purely-functional-data-structures-since-okasaki
-
-<!-- 
-![](./img/Types-of-Tree-Data-Structure.webp)
-https://www.geeksforgeeks.org/introduction-to-tree-data-structure/
- -->
