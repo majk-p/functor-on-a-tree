@@ -57,6 +57,7 @@ marp: true
 
 <!-- _transition: fade -->
 
+
 ---
 <!-- _transition: fade -->
 
@@ -102,6 +103,20 @@ they can spot...
 
 ![bg](./img/tree-with-functor-3.jpg)
 
+
+
+---
+
+<!-- _transition: fade -->
+
+# Hi 👋 My name is Michał Pawlik
+
+---
+<!-- _transition: fade -->
+
+
+![bg](./img/LDN-WRO.png)
+
 ---
 
 <!-- _transition: fade -->
@@ -138,9 +153,9 @@ they can spot...
 <!-- _class: line-numbers -->
 
 ```scala
-
 enum Tree[A] {
   case Branch(value: A, branches: NonEmptyList[Tree[A]])
+  case Leaf(value: A)
 ```
 
 ---
@@ -336,6 +351,14 @@ Let's start with drawing this:
 
 ---
 
+# Snapshot4s
+
+https://github.com/siriusxm/snapshot4s
+
+![bg right:30% 80%](data:image/gif;base64,R0lGODlhhACEAJEAAAAAAP///wAAAAAAACH5BAEAAAIALAAAAACEAIQAAAL/jI+py+0Po5y02ouz3rz7D4biSJbmiabqyrbuC8chQNf2jedUDiA2w+P5gkThpIi87XSH3yJZG0KRy2mxqmxGn1OpNYj9MiVGg1Nh9YpxWMy5QdWyuTTIu33cWu50sDyLpgcniEdGmFf3EGc2lsAXmLh36PAYUanWWOY4uRlZcdmHOcfouRhQqekFJGgKCtnzp/nWypn6t1p6dYsIS+rnKwp4WtuoGhqbyYnbO0xk7CtLPNrJ/Nz8e114HZ3rGbxWvQuMPO1K/c2a7k0OHj7+vp28TqmOPSvdjlqP3u0+2M+Nmb58AwXWC6iNFkB81greW1hO2TFo8gxOa7ivz0OL//YkvuLHMdgyjPPi9QNpzc7BiiInZhNHbSNKmCpL1uQYcKM5mRfMpeQ1kyJEfySJKvJ4rufKiEyFjaQJNKqkoTqXGoXn0+VNgiFh8sSaUWi7MASLmvUa1uRYXlzPgj2JluoasvncvnzbFW9bGWp3puUbw9RTeIBhCHaZtXCJwx+hKh7cV9crxv/yxuyyoSqUZZQhO8SsQXMSzpIt/WXXWWpkZxpL3/wpNrUh1mKLiobcMjbSxKtxps3JsLVcm44rA4dbmx1u5ah3Iw2q1rbV5cl1EyestGmauB2bvl5xfDT38LCTqgiv0Lf2043PV9yu9z178zPmkx4uzO/1yuW/Y/+ntx5td/GXnWUJPcecdfk5t59nCLY34FZWIXRUg4g9mAF8l3mnVXH3XVXfZsItWFJBdIEIgobQmdghgE6doGJzyNHX34gcfBXdiLzl1ptsEVZomS0KuiGfGP6ZNqOQvREZ4BdHHnmbjhjyuJeLTIpX3YYgUpgldDeCluNkDJKonj8+nkiejUDiqOSZbJXWZjFqxleia+AFh1eNCsb432J4Dojjh+BQ52edSdono5MtFmrmb4juCaaeBM5GZpRicphnghlimGaXidpl6aYWZtmplmw6elGBJ1Ip55DcSTeqcUU2KiCrIkJ6aKzpfZYqqWBqGOiaswqKj2joseShlEP/EWtopXD++iiNF9Y6XquTLpkspVDaSeeLVn6aLZJbTvinm90GO9W4+DlI7beu9nlgs6u++mav18ZLK4qaoiurvYRuK2+9QXLK7b2qsUjpqboW/C+QsJL5IUhcHbtwrt3la+zEApoLKLkz2qoxtO1em/HH+4YMLMN3Gikspv1iGdhcLUM8M8ckDFpztDjLsPPL/EpsLbOKapvzstX6K3DPTypb5sM7Ms2nwZc6a7GSaMpMtIullqyvu59MV5zVmhIqNoT48lt2mFKrvXTWavOqrrfSeur12fOljXexBK9LL930wZ3el3xn6rddQLt85Yqoym14olyKWqbCTTscNtY/pKaruNEQoh001HtHvjjCHTfLW9TsXswjqHpXDDPAqI/d9+VsF834tK8TLjvXKD997uKN97577V4HHrvowd/69eCjDxwwrrsnrqrt+sUtuaQN13103BJabP2ibS8//fbMG6iaNg9/D/Lv4laJLfa4Z961z5b7aPzqNIcWspeLcr7xlJ4jT79y2e9njymgAQ+IwAQqcIEMbKADHwjBCEpwghRsYAEAADs=)
+
+---
+
 # Renderer
 
 <!-- _class: line-numbers -->
@@ -383,6 +406,29 @@ Snapshot not equal
 ---
 
 # The missing `└──`
+
+---
+
+
+# Renderer
+
+<!-- _class: line-numbers -->
+
+```scala
+  def render(tree: Tree[String]): String =
+    tree match {
+      case Tree.Branch(value, branches) =>
+        val renderedBranches =
+          branches
+            .map(render(_))
+            .toList
+            .mkString("\n")
+        show"$value\n$renderedBranches"
+
+      case Tree.Leaf(value) => show"├── $value"
+    }
+```
+
 
 ---
 
@@ -813,7 +859,7 @@ Now let's attach some info along the way
 # Node positioning
 
 ```scala
-  enum Position {
+  enum Alignment {
     case First
     case Middle
     case Last
@@ -825,7 +871,7 @@ Now let's attach some info along the way
 # Node positioning
 
 ```scala
-  enum Position {
+  enum Alignment {
     case First
     case Middle
     case Last
@@ -833,7 +879,7 @@ Now let's attach some info along the way
 ```
 
 ```scala
-  def labelNodes[A](root: Tree[A]): List[(A, List[Position])] = {
+  def labelNodes[A](root: Tree[A]): List[(A, List[Alignment])] = {
 ```
 
 ---
@@ -841,9 +887,9 @@ Now let's attach some info along the way
 # Extended queue and result type
 
 ```scala
-  def labelNodes[A](root: Tree[A]): List[(A, List[Position])] = {
-    val q = Queue.empty[(Tree[A], List[Position])]
-    val results = ListBuffer.empty[(A, List[Position])]
+  def labelNodes[A](root: Tree[A]): List[(A, List[Alignment])] = {
+    val q = Queue.empty[(Tree[A], List[Alignment])]
+    val results = ListBuffer.empty[(A, List[Alignment])]
     q.enqueue((root, List.empty))
     while (q.nonEmpty) {
 ```
@@ -860,15 +906,15 @@ Now let's attach some info along the way
 
 ```scala
     while (q.nonEmpty) {
-      val (node, positions) = q.dequeue()
+      val (node, alignments) = q.dequeue()
       node match
         case Tree.Branch(value, branches) =>
           val branchesWithPositions =
-            attachPositions(positions)(branches.toList)
-          results.append((value, positions))
+            attachPositions(alignments)(branches.toList)
+          results.append((value, alignments))
           q.enqueueAll(branchesWithPositions)
         case Tree.Leaf(value) =>
-          results.append((value, positions))
+          results.append((value, alignments))
 ```
 
 
@@ -877,25 +923,29 @@ Now let's attach some info along the way
 # Extended queue and result type
 
 ```scala
-    while (q.nonEmpty) {
-      val (node, positions) = q.dequeue()
-      node match
-        case Tree.Branch(value, branches) =>
-          val branchesWithPositions =
-            attachPositions(positions)(branches.toList)
-          results.append((value, positions))
-          q.enqueueAll(branchesWithPositions)
-        case Tree.Leaf(value) =>
-          results.append((value, positions))
-```
 
-```scala
-
-  private def attachPositions[A](parantPositions: List[Position])(
+  private def attachPositions[A](parantPositions: List[Alignment])(
       branches: List[Tree[A]]
-  ): List[(Tree[A], List[Position])] =
+  ): List[(Tree[A], List[Alignment])] =
     branches.zipWithIndex.map { case (tree, index) =>
       (tree, parantPositions.appended(calculatePosition(index, branches.size)))
+```
+---
+
+# Let's test it
+
+For our test tree
+
+```bash
+/
+├── bin
+├── boot
+├── etc
+├── home
+│   └── majk
+├── root
+├── usr
+└── var
 ```
 
 ---
@@ -904,7 +954,7 @@ Now let's attach some info along the way
 
 ```scala
 
-  test("should produce extended positions") {
+  test("should produce extended alignments") {
     assertInlineSnapshot(
       BFSExtended.labelNodes(oneLevelTree),
       List(
@@ -932,7 +982,7 @@ Now let's attach some info along the way
 BFSTest:
   + should visit nodes in expected order 0.078s
   + should produce paddings 0.018s
-  + should produce extended positions 0.007s
+  + should produce extended alignments 0.007s
 ```
 
 ---
@@ -966,10 +1016,10 @@ object RendererV3 extends Renderer {
 ```scala
   private def renderRecursive[A: Show](
       tree: Tree[A],
-      mapping: Map[A, List[Position]]
+      mapping: Map[A, List[Alignment]]
   ): String = {
-    val positions = mapping.get(tree.getValue).getOrElse(List.empty)
-    val renderedPrefix = renderPositions(positions)
+    val alignments = mapping.get(tree.getValue).getOrElse(List.empty)
+    val renderedPrefix = renderAlignments(alignments)
     tree match {
       case Tree.Branch(value, branches) =>
         val renderedBranches =
@@ -988,18 +1038,18 @@ object RendererV3 extends Renderer {
 
 
 ```scala
-  private def renderPositions(positions: List[Position]) =
-    positions.zipWithIndex
-      .map((position, idx) => (position, idx == positions.size - 1))
-      .map(renderPosition)
+  private def renderAlignments(alignments: List[Alignment]) =
+    alignments.zipWithIndex
+      .map((alignment, idx) => (alignment, idx == alignments.size - 1))
+      .map(renderAlignment)
       .mkString
 
-  private def renderPosition(position: Position, isLast: Boolean) =
-    position match {
-      case Position.First | Position.Middle if (isLast)  => "├──"
-      case Position.First | Position.Middle if (!isLast) => "│  "
-      case Position.Last if (isLast)                     => "└──"
-      case Position.Last if (!isLast)                    => "   "
+  private def renderAlignment(alignment: Alignment, lastBranch: Boolean) =
+    alignment match {
+      case Alignment.First | Alignment.Middle if (lastBranch)  => "├──"
+      case Alignment.First | Alignment.Middle if (!lastBranch) => "│  "
+      case Alignment.Last if (lastBranch)                      => "└──"
+      case Alignment.Last if (!lastBranch)                     => "   "
     }
 ```
 
@@ -1188,15 +1238,19 @@ case class Speaker(name: String, social: String) {
 
 # Tree of `String`
 
-We need to turn `Tree[Event | Talk | Speaker | String]` into `Tree[String]`
+* We know how to print `Tree[String]`
+* We need to turn `Tree[Event | Talk | Speaker | String]` into `Tree[String]`
 
 
+---
+
+# Do you know what time it is? 🕔
 
 ---
 
 <!-- _transition: drop -->
 
-# This gonna be rude
+# It's time for...
 
 ---
 

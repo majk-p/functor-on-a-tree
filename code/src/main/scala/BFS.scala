@@ -22,39 +22,39 @@ object BFS {
     results.toList
   }
 
-  enum Position {
+  enum Alignment {
     case First
     case Middle
     case Last
   }
 
-  def labelNodes[A](root: Tree[A]): List[(A, Position)] = {
-    val q = Queue.empty[(Tree[A], Position)]
-    val results = ListBuffer.empty[(A, Position)]
-    q.enqueue((root, Position.First))
+  def labelNodes[A](root: Tree[A]): List[(A, Alignment)] = {
+    val q = Queue.empty[(Tree[A], Alignment)]
+    val results = ListBuffer.empty[(A, Alignment)]
+    q.enqueue((root, Alignment.First))
     while (q.nonEmpty) {
-      val (node, position) = q.dequeue()
+      val (node, alignment) = q.dequeue()
       println(f"Visiting ${node.getValue}%5s, queue: ${q.map(_._1.getValue)}")
       node match
         case Tree.Branch(value, branches) =>
           val branchesWithPositions = attachPosition(branches.toList)
-          results.append((value, position))
+          results.append((value, alignment))
           q.enqueueAll(branchesWithPositions)
         case Tree.Leaf(value) =>
-          results.append((value, position))
+          results.append((value, alignment))
     }
     results.toList
   }
 
   private def attachPosition[A](
       branches: List[Tree[A]]
-  ): List[(Tree[A], Position)] =
+  ): List[(Tree[A], Alignment)] =
     branches.zipWithIndex.map { case (tree, index) =>
       (tree, calculatePosition(index, branches.size))
     }
 
-  private def calculatePosition(idx: Int, size: Int): Position =
-    if (idx == size - 1) Position.Last
-    else if (idx == 0) Position.First
-    else Position.Middle
+  private def calculatePosition(idx: Int, size: Int): Alignment =
+    if (idx == size - 1) Alignment.Last
+    else if (idx == 0) Alignment.First
+    else Alignment.Middle
 }

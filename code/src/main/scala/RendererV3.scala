@@ -1,6 +1,6 @@
 import cats.Show
 import cats.syntax.all.*
-import BFS.Position
+import BFS.Alignment
 
 object RendererV3 extends Renderer {
 
@@ -11,10 +11,10 @@ object RendererV3 extends Renderer {
 
   private def renderRecursive[A: Show](
       tree: Tree[A],
-      mapping: Map[A, List[Position]]
+      mapping: Map[A, List[Alignment]]
   ): String = {
-    val positions = mapping.get(tree.getValue).getOrElse(List.empty)
-    val renderedPrefix = renderPositions(positions)
+    val alignments = mapping.get(tree.getValue).getOrElse(List.empty)
+    val renderedPrefix = renderAlignments(alignments)
     tree match {
       case Tree.Branch(value, branches) =>
         val renderedBranches =
@@ -26,17 +26,17 @@ object RendererV3 extends Renderer {
     }
   }
 
-  private def renderPositions(positions: List[Position]) =
-    positions.zipWithIndex
-      .map((position, idx) => (position, idx == positions.size - 1))
-      .map(renderPosition)
+  private def renderAlignments(alignments: List[Alignment]) =
+    alignments.zipWithIndex
+      .map((alignment, idx) => (alignment, idx == alignments.size - 1))
+      .map(renderAlignment)
       .mkString
 
-  private def renderPosition(position: Position, isLast: Boolean) =
-    position match {
-      case Position.First | Position.Middle if (isLast)  => "├──"
-      case Position.First | Position.Middle if (!isLast) => "│  "
-      case Position.Last if (isLast)                     => "└──"
-      case Position.Last if (!isLast)                    => "   "
+  private def renderAlignment(alignment: Alignment, lastBranch: Boolean) =
+    alignment match {
+      case Alignment.First | Alignment.Middle if (lastBranch)  => "├──"
+      case Alignment.First | Alignment.Middle if (!lastBranch) => "│  "
+      case Alignment.Last if (lastBranch)                      => "└──"
+      case Alignment.Last if (!lastBranch)                     => "   "
     }
 }

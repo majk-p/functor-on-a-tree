@@ -4,7 +4,7 @@ import Tree.Leaf
 
 import snapshot4s.munit.SnapshotAssertions
 import snapshot4s.generated.snapshotConfig
-import BFS.Position.*
+import BFS.Alignment.*
 
 class BFSTest extends munit.FunSuite with SnapshotAssertions {
 
@@ -61,7 +61,7 @@ class BFSTest extends munit.FunSuite with SnapshotAssertions {
     )
   }
 
-  test("should produce extended positions") {
+  test("should produce extended alignments") {
     assertInlineSnapshot(
       BFSExtended.labelNodes(oneLevelTree),
       List(
@@ -78,7 +78,7 @@ class BFSTest extends munit.FunSuite with SnapshotAssertions {
     )
   }
 
-  test("should produce extended positions - with duplicates") {
+  test("should produce extended alignments - with duplicates") {
     val oneLevelTree: Tree[String] =
       Branch(
         "/",
