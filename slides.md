@@ -83,9 +83,9 @@ def linesFromFile(file: String) =
 ---
 <!-- _transition: fade -->
 
-# When people go into the woods
+# When you go into the woods
 
-they can spot...
+you can spot...
 
 ![bg blur:5px brightness:0.4](./img/forest-backpack1.jpg)
 
@@ -102,7 +102,7 @@ they can spot...
 ---
 <!-- _transition: fade -->
 
-# But if they look **very** carefully
+# But if you look **very** carefully
 
 ![bg blur:5px brightness:0.4](./img/tree-with-functor-1.jpg)
 
@@ -125,20 +125,20 @@ they can spot...
 ---
 
 <!-- _transition: fade -->
+<!-- _class: white-background -->
 
 # Hi 👋 My name is Michał Pawlik
+![bg 100% right:30%](./img/sxm-padding.png)
+
+- Senior Software engineer @ SiriusXM
+- Blog about Scala
+- Occasional OSS
 
 ---
-<!-- _transition: fade -->
-
-
-![bg](./img/LDN-WRO.png)
-
----
 
 <!-- _transition: fade -->
 
-# But first things first
+# Tree
 
 ![bg blur:5px brightness:0.4](./img/tree2.jpg)
 
@@ -161,10 +161,6 @@ they can spot...
 
 ---
 
-# Let's model this
-
----
-
 # Tree
 
 <!-- _class: line-numbers -->
@@ -175,19 +171,7 @@ sourceFromFile("code/src/main/scala/tree.scala", (4, 6))
 
 ---
 
-# Now what?
-
-How's that useful?
-
----
-
-# Programming languages 🌳
-
-The compiler parses your text file and produces an Abstract Syntax Tree (AST)
-
-- Allow you to analyze and manipulate the syntactic structure of programs
-- Useful in meta-programming
-
+# How's that useful?
 
 ---
 
@@ -343,11 +327,11 @@ sourceFromFile("code/src/test/scala/RendererV1Test.scala", (12, 33))
 
 ---
 
-# Snapshot4s
+# Snapshot4s 📸
 
 https://github.com/siriusxm/snapshot4s
 
-![bg right:30% 80%](data:image/gif;base64,R0lGODlhhACEAJEAAAAAAP///wAAAAAAACH5BAEAAAIALAAAAACEAIQAAAL/jI+py+0Po5y02ouz3rz7D4biSJbmiabqyrbuC8chQNf2jedUDiA2w+P5gkThpIi87XSH3yJZG0KRy2mxqmxGn1OpNYj9MiVGg1Nh9YpxWMy5QdWyuTTIu33cWu50sDyLpgcniEdGmFf3EGc2lsAXmLh36PAYUanWWOY4uRlZcdmHOcfouRhQqekFJGgKCtnzp/nWypn6t1p6dYsIS+rnKwp4WtuoGhqbyYnbO0xk7CtLPNrJ/Nz8e114HZ3rGbxWvQuMPO1K/c2a7k0OHj7+vp28TqmOPSvdjlqP3u0+2M+Nmb58AwXWC6iNFkB81greW1hO2TFo8gxOa7ivz0OL//YkvuLHMdgyjPPi9QNpzc7BiiInZhNHbSNKmCpL1uQYcKM5mRfMpeQ1kyJEfySJKvJ4rufKiEyFjaQJNKqkoTqXGoXn0+VNgiFh8sSaUWi7MASLmvUa1uRYXlzPgj2JluoasvncvnzbFW9bGWp3puUbw9RTeIBhCHaZtXCJwx+hKh7cV9crxv/yxuyyoSqUZZQhO8SsQXMSzpIt/WXXWWpkZxpL3/wpNrUh1mKLiobcMjbSxKtxps3JsLVcm44rA4dbmx1u5ah3Iw2q1rbV5cl1EyestGmauB2bvl5xfDT38LCTqgiv0Lf2043PV9yu9z178zPmkx4uzO/1yuW/Y/+ntx5td/GXnWUJPcecdfk5t59nCLY34FZWIXRUg4g9mAF8l3mnVXH3XVXfZsItWFJBdIEIgobQmdghgE6doGJzyNHX34gcfBXdiLzl1ptsEVZomS0KuiGfGP6ZNqOQvREZ4BdHHnmbjhjyuJeLTIpX3YYgUpgldDeCluNkDJKonj8+nkiejUDiqOSZbJXWZjFqxleia+AFh1eNCsb432J4Dojjh+BQ52edSdono5MtFmrmb4juCaaeBM5GZpRicphnghlimGaXidpl6aYWZtmplmw6elGBJ1Ip55DcSTeqcUU2KiCrIkJ6aKzpfZYqqWBqGOiaswqKj2joseShlEP/EWtopXD++iiNF9Y6XquTLpkspVDaSeeLVn6aLZJbTvinm90GO9W4+DlI7beu9nlgs6u++mav18ZLK4qaoiurvYRuK2+9QXLK7b2qsUjpqboW/C+QsJL5IUhcHbtwrt3la+zEApoLKLkz2qoxtO1em/HH+4YMLMN3Gikspv1iGdhcLUM8M8ckDFpztDjLsPPL/EpsLbOKapvzstX6K3DPTypb5sM7Ms2nwZc6a7GSaMpMtIullqyvu59MV5zVmhIqNoT48lt2mFKrvXTWavOqrrfSeur12fOljXexBK9LL930wZ3el3xn6rddQLt85Yqoym14olyKWqbCTTscNtY/pKaruNEQoh001HtHvjjCHTfLW9TsXswjqHpXDDPAqI/d9+VsF834tK8TLjvXKD997uKN97577V4HHrvowd/69eCjDxwwrrsnrqrt+sUtuaQN13103BJabP2ibS8//fbMG6iaNg9/D/Lv4laJLfa4Z961z5b7aPzqNIcWspeLcr7xlJ4jT79y2e9njymgAQ+IwAQqcIEMbKADHwjBCEpwghRsYAEAADs=)
+![bg 80% right:40%](./img/snapshot4sqr.png)
 
 ---
 
@@ -456,8 +440,31 @@ Can we handle nested structures?
 
 # Let's test it
 
-```scala mdoc:passthrough
-sourceFromFile("code/src/test/scala/RendererV2Test.scala", (34, 62))
+```scala
+test("should render one level tree") {
+  val oneLevelTree: Tree[String] =
+    Branch(
+      "/",
+      NonEmptyList
+        .of(
+          Leaf("bin"), /*...*/,
+          Branch("home", NonEmptyList.one(Leaf("majk"))),
+          /*...*/Leaf("var")
+        )
+    )
+  assertInlineSnapshot(
+    renderer.render(oneLevelTree),
+    """/
+      |├── bin
+      |├── boot
+      |├── etc
+      |├── home
+      |│   └── majk
+      |├── root
+      |├── usr
+      |└── var""".stripMargin
+  )
+}
 ```
 
 ---
@@ -487,14 +494,7 @@ home
 
 ---
 
-# Back to the source code
-
-<!-- _class: line-numbers -->
-
-```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/RendererV2.scala", (6, 25))
-```
-
+# Why doesn't it work? 🤔
 
 ---
 
@@ -592,7 +592,7 @@ Let's do depth first search on a simplified tree
 /
 ├── bin
 ├── boot
-├── home
+❓─ home
 ❓  └── majk
 ```
 🤔 what should the first character be?
@@ -608,14 +608,6 @@ Let's do depth first search on a simplified tree
 * We need to learn the tree width first, before deciding how to print nodes
 
 ---
-<!-- _transition: fade -->
-
-# Breadth-first search
-![bg 100% right:40%](./img/Animated_BFS.gif)
-
-<!-- _footer: Source https://en.wikipedia.org/wiki/Breadth-first_search -->
-
----
 
 # Breadth-first search
 
@@ -623,7 +615,7 @@ Let's do depth first search on a simplified tree
 
 **Grey:** queued to be explored later on
 
-* You got this right, we're introducing a mutable queue 😲
+* You got this right, we're introducing a mutable queue!
 
 ![bg 100% right:40%](./img/Animated_BFS.gif)
 
@@ -655,8 +647,18 @@ sourceFromFile("code/src/main/scala/BFS.scala", (8, 23))
 
 # Let's test it
 
-```scala mdoc:passthrough
-sourceFromFile("code/src/test/scala/BFSTest.scala", (10, 31))
+For our test tree
+
+```bash
+/
+├── bin
+├── boot
+├── etc
+├── home
+│   └── majk
+├── root
+├── usr
+└── var
 ```
 
 ---
@@ -684,6 +686,24 @@ BFSTest:
 # So far so good, ordering makes sense
 
 Now let's attach some info along the way
+
+---
+
+# Node positioning
+
+Here's what we expect
+
+```bash
+/
+├── bin         | First
+├── boot        | Middle
+├── etc         | Middle
+├── home        | Middle
+│   └── majk    | Middle -> Last
+├── root        | Middle
+├── usr         | Middle
+└── var         | Last
+```
 
 ---
 
@@ -726,14 +746,6 @@ sourceFromFile("code/src/main/scala/BFSExtended.scala", (24,25))
 sourceFromFile("code/src/main/scala/BFSExtended.scala", (14,23))
 ```
 
-
----
-
-# Extended queue and result type
-
-```scala mdoc:passthrough
-sourceFromFile("code/src/main/scala/BFSExtended.scala", (27,32))
-```
 ---
 
 # Let's test it
@@ -742,14 +754,14 @@ For our test tree
 
 ```bash
 /
-├── bin
-├── boot
-├── etc
-├── home
-│   └── majk
-├── root
-├── usr
-└── var
+├── bin         | First
+├── boot        | Middle
+├── etc         | Middle
+├── home        | Middle
+│   └── majk    | Middle -> Last
+├── root        | Middle
+├── usr         | Middle
+└── var         | Last
 ```
 
 ---
@@ -781,8 +793,8 @@ BFSTest:
 
 # We are ready
 
-- `RendererV3` should first do BFS to learn the structure, 
-- then DFS to draw in correct order
+- First do BFS to learn the structure, 
+- Then DFS to draw in correct order
 
 ---
 <!-- _class: line-numbers -->
@@ -812,33 +824,6 @@ sourceFromFile("code/src/main/scala/RendererV3.scala", (29, 41))
 ---
 
 
-# `RendererV3` test
-
-```scala
-val complexTree: Tree[String] =
-```
-
----
-
-
-# `RendererV3` test
-
-
-```scala mdoc:passthrough
-sourceFromFile("code/src/test/scala/RendererV3Test.scala", (65, 126))
-```
-
----
-
-# `RendererV3` test
-
-
-```scala mdoc:passthrough
-sourceFromFile("code/src/test/scala/RendererV3Test.scala", (64, 68), (126, 126), (128, 152))
-```
-
----
-
 # Final challenge
 
 ![](./img/meetup.png)
@@ -848,22 +833,9 @@ sourceFromFile("code/src/test/scala/RendererV3Test.scala", (64, 68), (126, 126),
 
 # Model the data 
 
----
-
-# Model the data 
-
 
 ```scala mdoc:passthrough
 sourceFromFile("code/src/main/scala/meetup.scala", (3, 11))
-```
-
----
-
-# Model the data 
-
-
-```scala mdoc:passthrough
-sourceFromFile("code/src/test/scala/MeetupTest.scala", (25, 50))
 ```
 
 ---
@@ -877,6 +849,12 @@ sourceFromFile("code/src/test/scala/MeetupTest.scala", (25, 50))
 ---
 
 # Do you know what time it is? 🕔
+
+<!-- _transition: drop -->
+
+---
+
+## No, not the lunch break yet 🌯 🍲
 
 ---
 
@@ -978,18 +956,28 @@ sourceFromFile("code/src/test/scala/MeetupTest.scala", (62, 89))
 
 ![bg blur:5px brightness:0.3](./img/forest2.jpg)
 
-* Kinds of traversal algorithms - DFS and BFS
-* Some of them are specialized like our labeling and rendering
-* Others are generic like `map`
-* Mixing imperative and FP is good and can be fun!
+---
+<!-- _transition: drop -->
+
+# It's not FP vs OOP
+
+![bg blur:5px brightness:0.3](./img/forest2.jpg)
+
+---
+<!-- _transition: fade -->
+
+# It's FP and OOP!
+
+* With Scala you get the best of both worlds 🌍
+* Choose the right tools for the problem 🧰
+
+
+![bg blur:5px brightness:0.3](./img/forest2.jpg)
 
 ---
 <!-- _transition: fade -->
 
 
-![bg blur:5px brightness:0.3](./img/forest2.jpg)
-
-
 # Thank you!
 
 <style scoped>
@@ -998,33 +986,15 @@ h1, h2, h3, h4, h5, p, ul, li {
   text-align: center;
 }
 </style>
-
-Keep in touch! 🤝
 
 Blog: [blog.michal.pawlik.dev](https://blog.michal.pawlik.dev)
 Linkedin: [Michał Pawlik](https://www.linkedin.com/in/michał-pawlik/)
 Github: [majk-p](https://github.com/majk-p)
-Mastodon: [majkp@hostux.social](https://hostux.social/@majkp)
+Bluesky: [@michal.pawlik.dev](https://bsky.app/profile/michal.pawlik.dev)
 
----
+Get in touch! 👋
 
-![bg blur:5px brightness:0.3](./img/forest2.jpg)
-
-
-# Thank you!
-
-<style scoped>
-/* Styling for centering (required in default theme) */
-h1, h2, h3, h4, h5, p, ul, li {
-  text-align: center;
-}
-</style>
-
-Keep in touch! 🤝
-
-![width:350px](./img/qr-code-repo.png)
-
-Slides available at https://github.com/majk-p/functor-on-a-tree
+![bg 90% right:20%](./img/qr-code-repo.png)
 
 ---
 

@@ -84,6 +84,16 @@ section.yellow-background {
   color: #111;
 }
 
+section.white-background:before,
+section.white-background h1 {
+  color: #111;
+}
+
+section.white-background {
+  background-color: #eee;
+  color: #111;
+}
+
 /* make sure code snippets are above the copyright notice */
 section pre {
   z-index: 3;
