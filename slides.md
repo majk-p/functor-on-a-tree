@@ -667,15 +667,15 @@ For our test tree
 
 ```scala
 sbt:root> testOnly *BFS*
-Visiting     /, queue: Queue()
-Visiting   bin, queue: Queue(boot, etc, home, root, usr, var)
-Visiting  boot, queue: Queue(etc, home, root, usr, var)
-Visiting   etc, queue: Queue(home, root, usr, var)
-Visiting  home, queue: Queue(root, usr, var)
-Visiting  root, queue: Queue(usr, var, majk)
-Visiting   usr, queue: Queue(var, majk)
-Visiting   var, queue: Queue(majk)
-Visiting  majk, queue: Queue()
+queue: Queue()                                 Visiting     /
+queue: Queue(boot, etc, home, root, usr, var)  Visiting   bin
+queue: Queue(etc, home, root, usr, var)        Visiting  boot
+queue: Queue(home, root, usr, var)             Visiting   etc
+queue: Queue(root, usr, var)                   Visiting  home
+queue: Queue(usr, var, majk)                   Visiting  root
+queue: Queue(var, majk)                        Visiting   usr
+queue: Queue(majk)                             Visiting   var
+queue: Queue()                                 Visiting  majk
 BFSTest:
   + should visit nodes in expected order 0.124s
 [info] Passed: Total 1, Failed 0, Errors 0, Passed 1
@@ -744,6 +744,19 @@ sourceFromFile("code/src/main/scala/BFSExtended.scala", (24,25))
 
 ```scala mdoc:passthrough
 sourceFromFile("code/src/main/scala/BFSExtended.scala", (14,23))
+```
+
+---
+
+# Extended queue and result type
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFSExtended.scala", (28,33))
+```
+
+
+```scala mdoc:passthrough
+sourceFromFile("code/src/main/scala/BFSExtended.scala", (34,38))
 ```
 
 ---
